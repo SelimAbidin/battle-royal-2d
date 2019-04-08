@@ -2,9 +2,7 @@
 
 
 function Game(gameCanvas) {
-    
     this._gameCanvas = gameCanvas
-    this.
 }
 
 
