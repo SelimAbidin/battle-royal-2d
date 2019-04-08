@@ -14,4 +14,6 @@ function createCanvas(width, height) {
 var gameCanvas = createCanvas(500, 500)
 document.body.appendChild(gameCanvas)
 
+
 var game = new Game(gameCanvas)
+// game.addMap()
