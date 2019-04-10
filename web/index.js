@@ -15,5 +15,14 @@ var gameCanvas = createCanvas(500, 500)
 document.body.appendChild(gameCanvas)
 
 
-var game = new Game(gameCanvas)
+
+
+async function startGame() {
+    var game = new Game(gameCanvas)
+    game.init()
+}
+
+
+startGame()
+
 // game.addMap()
