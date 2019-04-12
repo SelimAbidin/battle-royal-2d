@@ -23,7 +23,3 @@ AssetsManager.onReady(function () {
     game.init()
     game.start()
 })
-
-
-
-// game.addMap()

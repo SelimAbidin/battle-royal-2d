@@ -16,8 +16,6 @@ function Hero() {
     document.addEventListener('keyup', this.onKeyUp)
 }
 
-
-
 Hero.prototype.onKeyDown = function (evt) {
     if (evt.keyCode === 87) { // up W
         this._vy = -1
