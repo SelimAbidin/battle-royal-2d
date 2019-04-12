@@ -24,7 +24,7 @@ AssetsManager.onReady(function () {
 
 
     var socket = io('http://localhost:3000')
-
+    socket.emit('ADD_NAME', 'Selim')
 
     var game = new Game(gameCanvas)
     game.init()
