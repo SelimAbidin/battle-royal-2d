@@ -1,6 +1,7 @@
 import { GameMap } from './GameMap'
-import { Sprite } from './display/Sprite';
-import { AssetsManager } from './AssetsManager';
+import { Sprite } from './display/Sprite'
+import { Hero } from './display/Hero'
+import { AssetsManager } from './AssetsManager'
 
 var heroKeys = ["angel"]
 
@@ -12,8 +13,7 @@ function Game(gameCanvas) {
 
 Game.prototype.init = function () {
     var heroKey = heroKeys[0]
-    this._hero = new Sprite(AssetsManager.getDrawableByKey(heroKey))
-    this._hero.setSize(40, 40)
+    this._hero = new Hero()
     this._map = new GameMap()
 }
 

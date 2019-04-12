@@ -35,9 +35,10 @@ AssetsManager.addImage = function (key, assetPath) {
         asset.width = image.width
         asset.height = image.height
         asset.ready = true
-        assets[key] = asset
+        asset.key = key
         onload(asset)
     }
+    assets[key] = asset
     image.src = assetPath
 }
 
