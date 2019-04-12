@@ -1,5 +1,7 @@
 import { Game } from './Game'
 import { AssetsManager } from './AssetsManager'
+import io from 'socket.io-client';
+
 function createCanvas(width, height) {
     var canvas = document.createElement('canvas')
     canvas.style.width = width + 'px'
@@ -19,6 +21,11 @@ AssetsManager.addImage(1, '/images/red.png')
 AssetsManager.addImage("angel", '/images/angel.png')
 
 AssetsManager.onReady(function () {
+
+
+    var socket = io('http://localhost:3000')
+
+
     var game = new Game(gameCanvas)
     game.init()
     game.start()
