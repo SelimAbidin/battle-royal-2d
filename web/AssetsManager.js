@@ -1,36 +1,57 @@
 
 
 var assets = {}
-
+var _callbacks = []
 function AssetsManager() {
     throw new Error('AssetsManager cannot be instanced')
 }
 
-function onload(params) {
-    
+function onload() {
+    let hasNonFinished = false
+    for (const key in assets) {
+        let asset = assets[key]
+        if (!asset.ready) {
+            hasNonFinished = true
+            break
+        }
+    }
+
+    if (!hasNonFinished) {
+        for (let i = 0; i < _callbacks.length; i++) {
+            _callbacks[i]()
+        }
+        _callbacks.length = 0
+    }
 }
 
 AssetsManager.addImage = function (key, assetPath) {
     var image = new Image()
-    var asset =  {
-        image:image,
+    var asset = {
+        image: image,
+        ready: false
     }
     image.onload = function (event) {
         let image = event.currentTarget
         asset.width = image.width
         asset.height = image.height
+        asset.ready = true
+        assets[key] = asset
         onload(asset)
     }
     image.src = assetPath
-    assets[key] = asset
+}
+
+
+AssetsManager.onReady = function (callBack) {
+    _callbacks.push(callBack)
 }
 
 AssetsManager.getDrawableByKey = function (key) {
-    if(typeof key === 'string') {
+    if (typeof key === 'string') {
         throw new TypeError("Type should be a string")
     }
     return assets[key]
 }
 
 
-export {AssetsManager}
+export { AssetsManager }

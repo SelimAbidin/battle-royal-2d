@@ -1,5 +1,5 @@
-import {Game} from './Game'
-import {AssetsManager} from './AssetsManager'
+import { Game } from './Game'
+import { AssetsManager } from './AssetsManager'
 function createCanvas(width, height) {
     var canvas = document.createElement('canvas')
     canvas.style.width = width + 'px'
@@ -22,8 +22,12 @@ document.body.appendChild(gameCanvas)
 AssetsManager.addImage(0, '/images/angel.png')
 AssetsManager.addImage(1, '/images/angel.png')
 
-var game = new Game(gameCanvas)
-game.init()
-game.start()
+AssetsManager.onReady(function () {
+    var game = new Game(gameCanvas)
+    game.init()
+    game.start()
+})
+
+
 
 // game.addMap()
