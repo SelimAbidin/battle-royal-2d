@@ -24,15 +24,19 @@ GameMap.prototype.init = function () {
         for (let j = 0; j < row.length; j++) {
             let terrainType = row[j]
             let drawable = AssetsManager.getDrawableByKey(terrainType)
+            let sprite = new Sprite(drawable)
+            this._sprites.push(sprite)
         }
-        
     }
 
 
 }
 
-GameMap.prototype.draw = function () {
-    
+GameMap.prototype.draw = function (context) {
+    for (let i = 0; i < this._sprites.length; i++) {
+        const sprite = this._sprites[i];
+        sprite.draw(context)
+    }
 }
 
 export {GameMap}

@@ -10,14 +10,20 @@ function onload(params) {
     
 }
 
-
 AssetsManager.addImage = function (key, assetPath) {
     var image = new Image()
-    image.onload = onload
+    var asset =  {
+        image:image,
+    }
+    image.onload = function (event) {
+        let image = event.currentTarget
+        asset.width = image.width
+        asset.height = image.height
+        onload(asset)
+    }
     image.src = assetPath
-    assets[key] =  image
+    assets[key] = asset
 }
-
 
 AssetsManager.getDrawableByKey = function (key) {
     if(typeof key === 'string') {
