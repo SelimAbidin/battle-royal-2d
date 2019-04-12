@@ -1,42 +1,43 @@
-import {Sprite} from './display/Sprite'
-import {AssetsManager} from './AssetsManager'
+import { Sprite } from './display/Sprite'
+import { AssetsManager } from './AssetsManager'
 var _map = [
-    [1,1,1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,1,1,1,1,1,1,1,1,1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
-
+var size = 500 / _map[0].length
 function GameMap() {
     this._sprites = []
     this.init()
 }
 
 GameMap.prototype.init = function () {
-    
-    for (let i = 0; i < _map.length; i++) {
-        let row = _map[i]
-        for (let j = 0; j < row.length; j++) {
-            let terrainType = row[j]
-            let drawable = AssetsManager.getDrawableByKey(terrainType)
-            let sprite = new Sprite(drawable)
+    for (var i = 0; i < _map.length; i++) {
+        var row = _map[i]
+        for (var j = 0; j < row.length; j++) {
+            var terrainType = row[j]
+            var drawable = AssetsManager.getDrawableByKey(terrainType)
+            var sprite = new Sprite(drawable)
+            sprite.setSize(size, size)
+            sprite.setPosition(i * size, j * size)
             this._sprites.push(sprite)
         }
     }
-
-
 }
 
 GameMap.prototype.draw = function (context) {
-    for (let i = 0; i < this._sprites.length; i++) {
+    for (var i = 0; i < this._sprites.length; i++) {
         const sprite = this._sprites[i];
         sprite.draw(context)
     }
 }
 
-export {GameMap}
+export { GameMap }

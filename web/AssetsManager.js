@@ -41,15 +41,11 @@ AssetsManager.addImage = function (key, assetPath) {
     image.src = assetPath
 }
 
-
 AssetsManager.onReady = function (callBack) {
     _callbacks.push(callBack)
 }
 
 AssetsManager.getDrawableByKey = function (key) {
-    if (typeof key === 'string') {
-        throw new TypeError("Type should be a string")
-    }
     return assets[key]
 }
 
