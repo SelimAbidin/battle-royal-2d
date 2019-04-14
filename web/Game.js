@@ -1,9 +1,13 @@
 import { GameMap } from './GameMap'
 import { Sprite } from './display/Sprite'
 import { Hero } from './display/Hero'
-import { AssetsManager } from './AssetsManager'
+import { socket } from './socket'
 
-var heroKeys = ["angel"]
+
+var requestObject = {
+    x: 0,
+    y: 0,
+}
 
 function Game(gameCanvas) {
     this._gameCanvas = gameCanvas
@@ -12,20 +16,35 @@ function Game(gameCanvas) {
 }
 
 Game.prototype.init = function () {
-    var heroKey = heroKeys[0]
     this._hero = new Hero()
     this._map = new GameMap()
 }
 
 Game.prototype.start = function () {
+
+
+
+
+
     this.update()
+
 }
+
+
 
 Game.prototype.update = function () {
     var ctx = this._ctx
     this._map.draw(ctx)
     this._hero.draw(ctx)
-    requestAnimationFrame(this.update)
+    // requestAnimationFrame(this.update)
+
+    socket.emit('USER', requestObject)
+
+    socket.on('UPDATE', (e) => {
+
+        this.update()
+
+    })
 }
 
 export { Game }
