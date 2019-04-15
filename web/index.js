@@ -20,13 +20,12 @@ document.body.appendChild(gameCanvas)
 AssetsManager.addImage(0, '/images/green.png')
 AssetsManager.addImage(1, '/images/red.png')
 AssetsManager.addImage("angel", '/images/angel.png')
+AssetsManager.addImage("happy", '/images/happy.png')
 
 AssetsManager.onReady(function () {
 
     let userName = 'Adam' + Date.now()
-    console.log(userName);
     socket.emit('ADD_NAME', userName)
-
     var game = new Game(gameCanvas, userName)
     game.init()
     game.start()
