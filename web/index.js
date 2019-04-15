@@ -23,9 +23,11 @@ AssetsManager.addImage("angel", '/images/angel.png')
 
 AssetsManager.onReady(function () {
 
-    socket.emit('ADD_NAME', 'Selim')
+    let userName = 'Adam' + Date.now()
+    console.log(userName);
+    socket.emit('ADD_NAME', userName)
 
-    var game = new Game(gameCanvas)
+    var game = new Game(gameCanvas, userName)
     game.init()
     game.start()
 

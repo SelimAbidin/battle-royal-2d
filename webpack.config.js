@@ -1,4 +1,4 @@
-const {join} = require('path')
+const { join } = require('path')
 
 module.exports = {
     entry: './web/index.js',
@@ -8,7 +8,9 @@ module.exports = {
     },
 
     devServer: {
-        port:8080,
+        port: 8080,
+        hot: false,
+        inline: false,
         contentBase: join(__dirname, 'public')
     }
 }

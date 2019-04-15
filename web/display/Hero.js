@@ -17,27 +17,27 @@ function Hero() {
 }
 
 Hero.prototype.onKeyDown = function (evt) {
-    // if (evt.keyCode === 87) { // up W
-    //     this._vy = -1
-    // } else if (evt.keyCode === 83) { // down S
-    //     this._vy = 1
-    // } else if (evt.keyCode === 65) { // down A
-    //     this._vx = -1
-    // } else if (evt.keyCode === 68) { // down D
-    //     this._vx = 1
-    // }
+    if (evt.keyCode === 87) { // up W
+        this._vy = -1
+    } else if (evt.keyCode === 83) { // down S
+        this._vy = 1
+    } else if (evt.keyCode === 65) { // down A
+        this._vx = -1
+    } else if (evt.keyCode === 68) { // down D
+        this._vx = 1
+    }
 }
 
 Hero.prototype.onKeyUp = function (evt) {
-    // if (evt.keyCode === 87 && this._vy < 0) { // up W
-    //     this._vy = 0
-    // } else if (evt.keyCode === 83 && this._vy > 0) { // down S
-    //     this._vy = 0
-    // } else if (evt.keyCode === 65 && this._vx < 0) { // down A
-    //     this._vx = 0
-    // } else if (evt.keyCode === 68 && this._vx > 0) { // down D
-    //     this._vx = 0
-    // }
+    if (evt.keyCode === 87 && this._vy < 0) { // up W
+        this._vy = 0
+    } else if (evt.keyCode === 83 && this._vy > 0) { // down S
+        this._vy = 0
+    } else if (evt.keyCode === 65 && this._vx < 0) { // down A
+        this._vx = 0
+    } else if (evt.keyCode === 68 && this._vx > 0) { // down D
+        this._vx = 0
+    }
 }
 
 Hero.prototype.getMoveY = function (ctx) {
@@ -49,9 +49,8 @@ Hero.prototype.getMoveX = function (ctx) {
 }
 
 Hero.prototype.draw = function (ctx) {
-    this.setPosition(this._x + this._vx, this._y + this._vy)
+    this.setPosition(this._x, this._y)
     Sprite.prototype.draw.apply(this, [ctx])
-    this._move = 0
 }
 
 export { Hero }
