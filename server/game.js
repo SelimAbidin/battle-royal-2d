@@ -17,7 +17,10 @@ class Game {
 
 
     update() {
-
+        for (let i = 0; i < this._users.length; i++) {
+            const user = this._users[i];
+            user.update()
+        }
     }
 
     serialize() {

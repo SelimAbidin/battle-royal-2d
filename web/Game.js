@@ -2,6 +2,7 @@ import { GameMap } from './GameMap'
 import { Hero } from './display/Hero'
 import { Enemy } from './display/Enemy'
 import { socket } from './socket'
+import { PLAYER } from '../types'
 
 var requestObject = {
     x: 0,
@@ -41,7 +42,7 @@ Game.prototype.start = function () {
         for (let i = 0; i < positions.length; i++) {
             var position = positions[i];
 
-            if (position.type === 0) {
+            if (position.type === PLAYER) {
                 if (position.name === this._name) {
                     this._hero.setPosition(position.x, position.y)
                 } else {
@@ -75,7 +76,7 @@ Game.prototype.update = function () {
 
     requestObject.x = this._hero.getMoveX()
     requestObject.y = this._hero.getMoveY()
-    requestObject.md = this._mouseDown
+    // requestObject.md = this._mouseDown
     socket.emit('USER', requestObject)
 
     requestAnimationFrame(this.update)

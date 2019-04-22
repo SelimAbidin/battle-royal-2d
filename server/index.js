@@ -61,6 +61,8 @@ io.on('connection', function (socket) {
 
 setInterval(() => {
     game.update()
+    // console.log(game.serialize());
+
     io.emit('UPDATE', game.serialize())
     // users.forEach(user => {
     //     user.socket.emit('UPDATE', {
