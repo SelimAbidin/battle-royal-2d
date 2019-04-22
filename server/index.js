@@ -32,56 +32,23 @@ function createUser(name, userID, socket, type) {
 
 
 io.on('connection', function (socket) {
-    console.log('an user connected', socket.id);
 
     socket.on('ADD_NAME', (name) => {
         createUser(name, socket.id, socket, 0)
     })
 
-    // socket.on('USER', (e) => {
-    //     let user = userMap[socket.id]
-    //     if (!user) {
-    //         return
-    //     }
-    //     if (e.x === -1) {
-    //         user.x -= 1
-    //     } else if (e.x === 1) {
-    //         user.x += 1
-    //     }
-    //     if (e.y === -1) {
-    //         user.y -= 1
-    //     } else if (e.y === 1) {
-    //         user.y += 1
-    //     }
-    // })
-
 });
 
 
 
+let deltaTime = Date.now()
 setInterval(() => {
-    game.update()
-    // console.log(game.serialize());
 
+    game.update((Date.now() - deltaTime) / 1000)
+    deltaTime = Date.now()
     io.emit('UPDATE', game.serialize())
-    // users.forEach(user => {
-    //     user.socket.emit('UPDATE', {
-    //         x: user.x,
-    //         y: user.y
-    //     })
-    // })
 
-    // let socketUsers = users.map(({ x, y, name, type }) => ({ x, y, name, type }))
-    // io.emit('UPDATE', socketUsers)
-    // users.forEach(user => {
-    //     user.socket.emit('UPDATE', {
-    //         x: user.x,
-    //         y: user.y
-    //     })
-    // })
-
-
-}, 1000 / 60)
+}, 1000 / 90)
 
 http.listen(3000, () => {
     console.log('Server Started')

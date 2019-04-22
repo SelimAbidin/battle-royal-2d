@@ -1,5 +1,6 @@
 
 
 module.exports = {
-    PLAYER: 0
+    PLAYER: 0,
+    BULLET: 1,
 }

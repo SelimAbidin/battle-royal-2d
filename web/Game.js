@@ -1,6 +1,7 @@
 import { GameMap } from './GameMap'
 import { Hero } from './display/Hero'
 import { Enemy } from './display/Enemy'
+import { Bullet } from './display/Bullet'
 import { socket } from './socket'
 import { PLAYER } from '../types'
 
@@ -14,7 +15,8 @@ function Game(gameCanvas, userName) {
     this._name = userName
     this.update = this.update.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
-    this._enemies = {}
+    this._enemies = []
+    this._bullets = []
     this._ctx = gameCanvas.getContext('2d')
 
     this._mouseDown = false
@@ -36,24 +38,31 @@ Game.prototype.onMouseUp = function () {
 
 Game.prototype.start = function () {
 
-    socket.on('UPDATE', (positions) => {
-        this._enemies = {}
+    socket.on('UPDATE', (data) => {
+
+        let positions = data.p
+        let bullets = data.b
+        this._enemies.length = 0
+        this._bullets.length = 0
 
         for (let i = 0; i < positions.length; i++) {
             var position = positions[i];
-
-            if (position.type === PLAYER) {
-                if (position.name === this._name) {
-                    this._hero.setPosition(position.x, position.y)
-                } else {
-                    var enemies = this._enemies
-                    if (enemies[position.name] === undefined) {
-                        enemies[position.name] = new Enemy()
-                    }
-                    enemies[position.name].setPosition(position.x, position.y)
-                }
+            if (position.name === this._name) {
+                this._hero.setPosition(position.x, position.y)
+            } else {
+                let enemy = new Enemy()
+                enemy.setPosition(position.x, position.y)
+                this._enemies.push(enemy)
             }
+        }
 
+
+        for (let i = 0; i < bullets.length; i++) {
+            var bullet = bullets[i];
+            let b = new Bullet()
+            b.setPosition(bullet.x, bullet.y)
+
+            this._bullets.push(b)
         }
 
     })
@@ -67,16 +76,24 @@ Game.prototype.update = function () {
     var ctx = this._ctx
     this._map.draw(ctx)
     var enemies = this._enemies
-    for (var key in enemies) {
-        var enemy = enemies[key]
+
+    for (let i = 0; i < this._enemies.length; i++) {
+        var enemy = this._enemies[i];
         enemy.draw(ctx)
     }
 
     this._hero.draw(ctx)
 
+
+    for (let i = 0; i < this._bullets.length; i++) {
+        var bullet = this._bullets[i];
+        bullet.draw(ctx)
+    }
+
+
     requestObject.x = this._hero.getMoveX()
     requestObject.y = this._hero.getMoveY()
-    // requestObject.md = this._mouseDown
+    requestObject.md = this._mouseDown
     socket.emit('USER', requestObject)
 
     requestAnimationFrame(this.update)
