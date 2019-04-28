@@ -18,6 +18,7 @@ function Game(gameCanvas, userName) {
     this.update = this.update.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
+    this.onMouseMove = this.onMouseMove.bind(this)
     this._enemies = []
     this._bullets = []
     this._ctx = gameCanvas.getContext('2d')
@@ -25,11 +26,19 @@ function Game(gameCanvas, userName) {
     this._mouseDown = false
     gameCanvas.addEventListener('mousedown', this.onMouseDown)
     document.addEventListener('mouseup', this.onMouseUp)
+    document.addEventListener('mousemove', this.onMouseMove)
 }
 
 Game.prototype.init = function () {
     this._hero = new Hero()
     this._map = new GameMap()
+}
+
+Game.prototype.onMouseMove = function (e) {
+    this._mousePosition = {
+        x: e.offsetX,
+        y: e.offsetY,
+    }
 }
 
 Game.prototype.onMouseDown = function () {
@@ -72,9 +81,6 @@ Game.prototype.start = function () {
 }
 
 
-
-var camX = 0
-
 Game.prototype.update = function () {
     var ctx = this._ctx
     ctx.clearRect(0, 0, 700, 700)
@@ -85,9 +91,9 @@ Game.prototype.update = function () {
     requestObject.x = this._hero.getMoveX()
     requestObject.y = this._hero.getMoveY()
     requestObject.md = this._mouseDown
+    requestObject.mp = this._mousePosition
+
     socket.emit('USER', requestObject)
-
-
 
     for (let i = 0; i < this._enemies.length; i++) {
         var enemy = this._enemies[i];

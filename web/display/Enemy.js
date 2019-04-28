@@ -12,9 +12,4 @@ function Enemy() {
 }
 
 
-Enemy.prototype.draw = function (ctx) {
-    this.setPosition(this._x, this._y)
-    Sprite.prototype.draw.apply(this, [ctx])
-}
-
 export { Enemy }

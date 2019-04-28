@@ -7,10 +7,17 @@ class Bullet {
         this._y = y
         this._vx = vx
         this._vy = vy
+        this._isDead = false
+        this.kill = this.kill.bind(this)
+        setTimeout(this.kill, 1000)
     }
 
-    inBound(boundBox) {
+    kill() {
+        this._isDead = true
+    }
 
+    isDead() {
+        return this._isDead
     }
 
     update(deltaTime) {
@@ -52,6 +59,12 @@ class Game {
 
         for (let i = 0; i < this._bullets.length; i++) {
             const bullet = this._bullets[i];
+
+            if (bullet.isDead()) {
+                this._bullets.splice(i, 1)
+                continue
+            }
+
             bullet.update(deltaTme)
         }
 
@@ -60,7 +73,6 @@ class Game {
             const user = this._users[i];
             user.update(deltaTme)
             if (user instanceof Player) {
-
                 if (user.needsToFire()) {
                     let bulletModel = user.createBullet()
                     this.addBullet(bulletModel)
