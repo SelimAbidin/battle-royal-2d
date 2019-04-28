@@ -4,6 +4,7 @@ import { Enemy } from './display/Enemy'
 import { Bullet } from './display/Bullet'
 import { socket } from './socket'
 import { PLAYER } from '../types'
+import { Camera } from './display/Camera';
 
 var requestObject = {
     x: 0,
@@ -20,7 +21,7 @@ function Game(gameCanvas, userName) {
     this._enemies = []
     this._bullets = []
     this._ctx = gameCanvas.getContext('2d')
-
+    this._camera = new Camera()
     this._mouseDown = false
     gameCanvas.addEventListener('mousedown', this.onMouseDown)
     document.addEventListener('mouseup', this.onMouseUp)
@@ -42,17 +43,17 @@ Game.prototype.start = function () {
 
     socket.on('UPDATE', (data) => {
 
-        let positions = data.p
-        let bullets = data.b
+        var positions = data.p
+        var bullets = data.b
         this._enemies.length = 0
         this._bullets.length = 0
 
-        for (let i = 0; i < positions.length; i++) {
+        for (var i = 0; i < positions.length; i++) {
             var position = positions[i];
             if (position.name === this._name) {
                 this._hero.setPosition(position.x, position.y)
             } else {
-                let enemy = new Enemy()
+                var enemy = new Enemy()
                 enemy.setPosition(position.x, position.y)
                 this._enemies.push(enemy)
             }
@@ -62,7 +63,6 @@ Game.prototype.start = function () {
             var bullet = bullets[i];
             let b = new Bullet()
             b.setPosition(bullet.x, bullet.y)
-
             this._bullets.push(b)
         }
 
@@ -75,8 +75,13 @@ Game.prototype.start = function () {
 
 Game.prototype.update = function () {
     var ctx = this._ctx
-    this._map.draw(ctx)
+    ctx.clearRect(0, 0, 700, 700)
+    this._map.draw(this._camera, ctx)
     var enemies = this._enemies
+
+    this._camera.setPosition(this._hero.getX(), this._hero.getY())
+
+
 
     for (let i = 0; i < this._enemies.length; i++) {
         var enemy = this._enemies[i];
@@ -95,8 +100,6 @@ Game.prototype.update = function () {
     requestObject.x = this._hero.getMoveX()
     requestObject.y = this._hero.getMoveY()
     requestObject.md = this._mouseDown
-
-    console.log(requestObject.md);
 
     socket.emit('USER', requestObject)
 

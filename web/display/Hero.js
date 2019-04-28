@@ -49,7 +49,6 @@ Hero.prototype.getMoveX = function (ctx) {
 }
 
 Hero.prototype.draw = function (ctx) {
-    this.setPosition(this._x, this._y)
     Sprite.prototype.draw.apply(this, [ctx])
 }
 

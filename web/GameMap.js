@@ -34,9 +34,19 @@ GameMap.prototype.init = function () {
     }
 }
 
-GameMap.prototype.draw = function (context) {
+GameMap.prototype.draw = function (camera, context) {
+
+    // camera
+
+    // var left = camera.getBoundLeft()
+
     for (var i = 0; i < this._sprites.length; i++) {
         const sprite = this._sprites[i];
+        // no need view matrix
+        // var x = sprite.getX() - left
+        // sprite.modelViewMatrix
+        sprite.setViewMatrix(x)
+        var x = 11
         sprite.draw(context)
     }
 }
