@@ -9,8 +9,8 @@ module.exports = {
 
     devServer: {
         port: 8080,
-        hot: false,
-        inline: false,
+        hot: true,
+        inline: true,
         contentBase: join(__dirname, 'public')
     }
 }

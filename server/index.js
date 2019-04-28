@@ -14,7 +14,6 @@ let game = new Game()
 
 app.engine('.ejs', ejs.__express);
 app.get('/users.html', (req, res) => {
-
     res.render(join(__dirname, 'views/users.ejs'), {
         users: users.map(i => ({
             name: i.name,
@@ -32,11 +31,9 @@ function createUser(name, userID, socket, type) {
 
 
 io.on('connection', function (socket) {
-
     socket.on('ADD_NAME', (name) => {
         createUser(name, socket.id, socket, 0)
     })
-
 });
 
 

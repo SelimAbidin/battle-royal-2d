@@ -9,9 +9,13 @@ class Bullet {
         this._vy = vy
     }
 
+    inBound(boundBox) {
+
+    }
+
     update(deltaTime) {
-        this._x += (this._vx * 3) * deltaTime
-        this._y += (this._vy * 3) * deltaTime
+        this._x += (this._vx * 300) * deltaTime
+        this._y += (this._vy * 300) * deltaTime
     }
 
     serialize() {
@@ -41,11 +45,17 @@ class Game {
     }
 
     addBullet(bulletModel) {
-        console.log('add bullet');
         this._bullets.push(new Bullet(bulletModel.x, bulletModel.y, bulletModel.vx, bulletModel.vy))
     }
 
     update(deltaTme) {
+
+        for (let i = 0; i < this._bullets.length; i++) {
+            const bullet = this._bullets[i];
+            bullet.update(deltaTme)
+        }
+
+
         for (let i = 0; i < this._users.length; i++) {
             const user = this._users[i];
             user.update(deltaTme)

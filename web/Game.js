@@ -8,6 +8,7 @@ import { PLAYER } from '../types'
 var requestObject = {
     x: 0,
     y: 0,
+    md: false, // mouse down
 }
 
 function Game(gameCanvas, userName) {
@@ -15,6 +16,7 @@ function Game(gameCanvas, userName) {
     this._name = userName
     this.update = this.update.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
+    this.onMouseUp = this.onMouseUp.bind(this)
     this._enemies = []
     this._bullets = []
     this._ctx = gameCanvas.getContext('2d')
@@ -56,7 +58,6 @@ Game.prototype.start = function () {
             }
         }
 
-
         for (let i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];
             let b = new Bullet()
@@ -94,6 +95,9 @@ Game.prototype.update = function () {
     requestObject.x = this._hero.getMoveX()
     requestObject.y = this._hero.getMoveY()
     requestObject.md = this._mouseDown
+
+    console.log(requestObject.md);
+
     socket.emit('USER', requestObject)
 
     requestAnimationFrame(this.update)
