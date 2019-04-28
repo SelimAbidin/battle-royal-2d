@@ -17,7 +17,8 @@ function createCanvas(width, height) {
 var gameCanvas = createCanvas(500, 500)
 document.body.appendChild(gameCanvas)
 
-AssetsManager.addImage(0, '/images/green.png')
+// AssetsManager.addImage(0, '/images/green.png')
+AssetsManager.addImage(0, '/images/tile.jpg')
 AssetsManager.addImage(1, '/images/red.png')
 AssetsManager.addImage("angel", '/images/angel.png')
 AssetsManager.addImage("happy", '/images/happy.png')

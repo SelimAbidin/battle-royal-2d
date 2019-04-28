@@ -13,7 +13,8 @@ var _map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
-var size = 500 / _map[0].length
+// var size = 500 / _map[0].length
+var size = 500
 function GameMap() {
     this._sprites = []
     this.init()
