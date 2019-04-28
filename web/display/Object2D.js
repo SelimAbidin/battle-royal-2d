@@ -4,13 +4,21 @@ function Object2D() {
     this._x = 0
     this._y = 0
     this.position = vec2.create()
-    this.modelViewMatrix = mat3.create()
+    this.modelMatrix = mat3.create()
 }
 
 Object2D.prototype.setPosition = function (x, y) {
     this.position = vec2.set(this.position, x, y)
     this._x = x
     this._y = y
+}
+
+Object2D.prototype.getWidth = function () {
+    return this._width
+}
+
+Object2D.prototype.getHeight = function () {
+    return this._height
 }
 
 
@@ -26,8 +34,5 @@ Object2D.prototype.setSize = function (w, h) {
     this._width = w
     this._height = h
 }
-
-
-
 
 export { Object2D }

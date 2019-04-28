@@ -11,10 +11,4 @@ function Bullet() {
     this._vy = 0
 }
 
-
-Bullet.prototype.draw = function (ctx) {
-    this.setPosition(this._x, this._y)
-    Sprite.prototype.draw.apply(this, [ctx])
-}
-
 export { Bullet }

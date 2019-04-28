@@ -48,8 +48,4 @@ Hero.prototype.getMoveX = function (ctx) {
     return this._vx
 }
 
-Hero.prototype.draw = function (ctx) {
-    Sprite.prototype.draw.apply(this, [ctx])
-}
-
 export { Hero }

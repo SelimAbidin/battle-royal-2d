@@ -73,37 +73,48 @@ Game.prototype.start = function () {
 
 
 
+var camX = 0
+
 Game.prototype.update = function () {
     var ctx = this._ctx
     ctx.clearRect(0, 0, 700, 700)
     this._map.draw(this._camera, ctx)
-    var enemies = this._enemies
 
-    this._camera.setPosition(this._hero.getX(), this._hero.getY())
+    this._camera.setPosition(this._hero.getX() - 350, this._hero.getY() - 350)
+
+    requestObject.x = this._hero.getMoveX()
+    requestObject.y = this._hero.getMoveY()
+    requestObject.md = this._mouseDown
+    socket.emit('USER', requestObject)
 
 
 
     for (let i = 0; i < this._enemies.length; i++) {
         var enemy = this._enemies[i];
-        enemy.draw(ctx)
+        enemy.draw(this._camera, ctx)
     }
-
-    this._hero.draw(ctx)
-
 
     for (let i = 0; i < this._bullets.length; i++) {
         var bullet = this._bullets[i];
-        bullet.draw(ctx)
+        bullet.draw(this._camera, ctx)
     }
 
 
-    requestObject.x = this._hero.getMoveX()
-    requestObject.y = this._hero.getMoveY()
-    requestObject.md = this._mouseDown
-
-    socket.emit('USER', requestObject)
+    this._hero.draw(this._camera, ctx)
 
     requestAnimationFrame(this.update)
+    return
+
+
+
+
+
+
+
+
+
+
+    setTimeout(this.update, 1000)
 }
 
 export { Game }

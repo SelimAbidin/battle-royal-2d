@@ -10,14 +10,12 @@ function Sprite(drawable) {
 Sprite.prototype = Object.create(Object2D.prototype)
 Sprite.prototype.constractor = Sprite
 
-Sprite.prototype.setViewMatrix = function (left) {
-    return this._left
+Sprite.prototype.getGraphic = function () {
+    return this._drawable.image
 }
 
-Sprite.prototype.draw = function (context) {
-    var position = vec2.transformMat3(vec2.create(), this.position, this.modelViewMatrix)
-    var drawable = this._drawable
-    context.drawImage(drawable.image, position[0], position[1], this._width, this._height)
+Sprite.prototype.draw = function (camera, context) {
+    context.drawImage(this._drawable.image, this._x - camera.getX(), this._y - camera.getY(), this._width, this._height)
 }
 
 export { Sprite }
