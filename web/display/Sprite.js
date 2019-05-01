@@ -15,7 +15,9 @@ Sprite.prototype.getGraphic = function () {
 }
 
 Sprite.prototype.draw = function (camera, context) {
-    context.drawImage(this._drawable.image, this._x - camera.getX(), this._y - camera.getY(), this._width, this._height)
+    var halfW = this._width / 2
+    var halfH = this._height / 2
+    context.drawImage(this._drawable.image, (this._x - camera.getX()) - halfW, (this._y - camera.getY()) - halfH, this._width, this._height)
 }
 
 export { Sprite }
