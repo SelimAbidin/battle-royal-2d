@@ -22,6 +22,8 @@ function GameMap() {
 }
 
 GameMap.prototype.init = function () {
+
+    let half = size * 0.5
     for (var i = 0; i < _map.length; i++) {
         var row = _map[i]
         for (var j = 0; j < row.length; j++) {
@@ -29,7 +31,7 @@ GameMap.prototype.init = function () {
             var drawable = AssetsManager.getDrawableByKey(terrainType)
             var sprite = new Sprite(drawable)
             sprite.setSize(size, size)
-            sprite.setPosition(i * size, j * size)
+            sprite.setPosition(half + (i * size), half + (j * size))
             this._sprites.push(sprite)
         }
     }

@@ -1,4 +1,3 @@
-import { vec2, mat3 } from 'gl-matrix'
 import { Object2D } from './Object2D'
 
 function Sprite(drawable) {

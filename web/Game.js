@@ -80,13 +80,11 @@ Game.prototype.start = function () {
     this.update()
 }
 
-
+window.cameraX = 0
 Game.prototype.update = function () {
     var ctx = this._ctx
     ctx.clearRect(0, 0, 700, 700)
     this._map.draw(this._camera, ctx)
-
-    this._camera.setPosition(this._hero.getX() - 350, this._hero.getY() - 350)
 
     requestObject.x = this._hero.getMoveX()
     requestObject.y = this._hero.getMoveY()
@@ -107,6 +105,31 @@ Game.prototype.update = function () {
 
 
     this._hero.draw(this._camera, ctx)
+
+
+    let cameraX
+    let cameraY
+    if (this._hero.getX() < 350) {
+        cameraX = 0
+    } else if (this._hero.getX() > 4650) {
+        cameraX = 4650 - 350
+    } else {
+        cameraX = this._hero.getX() - 350
+    }
+
+    if (this._hero.getY() < 350) {
+        cameraY = 0
+    } else if (this._hero.getY() > 4650) {
+        cameraY = 4650 - 350
+    } else {
+        cameraY = this._hero.getY() - 350
+    }
+
+    // console.log(this._hero.getX());
+
+
+    this._camera.setPosition(cameraX, cameraY)
+
 
     requestAnimationFrame(this.update)
     return

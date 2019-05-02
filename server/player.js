@@ -7,11 +7,11 @@ class Player {
     constructor(id, name, socket) {
         this._id = id
         this._name = name
-        this._x = 0
+        this._x = 4640
         this._y = 0
         this._vx = 0
         this._vy = 0
-        this._speed = 50
+        this._speed = 500
         this._type = PLAYER
         this._socket = socket
         this._isMouseDown = false
