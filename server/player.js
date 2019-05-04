@@ -47,7 +47,11 @@ class Player {
     }
 
     createBullet() {
+
+        if (!this._mousePosition) return
+
         this._fireCount = 0
+
         let dx = this._mousePosition.x - 350
         let dy = this._mousePosition.y - 350
         let angle = Math.atan2(dy, dx)

@@ -104,7 +104,6 @@ Game.prototype.update = function () {
     }
 
 
-    this._hero.draw(this._camera, ctx)
 
 
     let cameraX
@@ -125,23 +124,12 @@ Game.prototype.update = function () {
         cameraY = this._hero.getY() - 350
     }
 
-    // console.log(this._hero.getX());
-
 
     this._camera.setPosition(cameraX, cameraY)
-
+    this._hero.draw(this._camera, ctx)
 
     requestAnimationFrame(this.update)
     return
-
-
-
-
-
-
-
-
-
 
     setTimeout(this.update, 1000)
 }

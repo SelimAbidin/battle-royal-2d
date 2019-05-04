@@ -1,21 +1,8 @@
 import { Sprite } from './display/Sprite'
 import { AssetsManager } from './AssetsManager'
 import { mat3 } from 'gl-matrix'
-var _map = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-]
-
+import { MAP as _map, TILE_SIZE } from '../common/map'
 // var size = 500 / _map[0].length
-var size = 500
 function GameMap() {
     this._sprites = []
     this.init()
@@ -23,15 +10,15 @@ function GameMap() {
 
 GameMap.prototype.init = function () {
 
-    let half = size * 0.5
+    let half = TILE_SIZE * 0.5
     for (var i = 0; i < _map.length; i++) {
         var row = _map[i]
         for (var j = 0; j < row.length; j++) {
             var terrainType = row[j]
             var drawable = AssetsManager.getDrawableByKey(terrainType)
             var sprite = new Sprite(drawable)
-            sprite.setSize(size, size)
-            sprite.setPosition(half + (i * size), half + (j * size))
+            sprite.setSize(TILE_SIZE, TILE_SIZE)
+            sprite.setPosition(half + (i * TILE_SIZE), half + (j * TILE_SIZE))
             this._sprites.push(sprite)
         }
     }
