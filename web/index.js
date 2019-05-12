@@ -19,7 +19,7 @@ document.body.appendChild(gameCanvas)
 
 // AssetsManager.addImage(0, '/images/green.png')
 AssetsManager.addImage(0, '/images/tile.jpg')
-AssetsManager.addImage(1, '/images/red.png')
+AssetsManager.addImage(1, '/images/space.jpg')
 AssetsManager.addImage("angel", '/images/angel.png')
 AssetsManager.addImage("happy", '/images/happy.png')
 AssetsManager.addImage("bullet", '/images/bullet.png')
