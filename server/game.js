@@ -1,5 +1,6 @@
 const { BULLET } = require('../types')
 const { Player } = require('./player')
+const { CENTER } = require('../common/map')
 
 class Bullet {
     constructor(x, y, vx, vy) {
@@ -40,6 +41,7 @@ class Game {
     constructor() {
         this._users = []
         this._bullets = []
+        this._clearAreaRadius = 3000
     }
 
     addUser(player) {
@@ -57,14 +59,14 @@ class Game {
 
     update(deltaTme) {
 
+        this._clearAreaRadius -= deltaTme * 30
+
         for (let i = 0; i < this._bullets.length; i++) {
             const bullet = this._bullets[i];
-
             if (bullet.isDead()) {
                 this._bullets.splice(i, 1)
                 continue
             }
-
             bullet.update(deltaTme)
         }
 
@@ -82,7 +84,9 @@ class Game {
     }
 
     serialize() {
+
         return {
+            f: { r: this._clearAreaRadius, x: CENTER.x, y: CENTER.y },
             p: this._users.map(player => player.serialize()),
             b: this._bullets.map(bullet => bullet.serialize()),
         }

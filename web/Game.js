@@ -5,6 +5,8 @@ import { Bullet } from './display/Bullet'
 import { socket } from './socket'
 import { PLAYER } from '../types'
 import { Camera } from './display/Camera';
+import { Fog } from './display/Fog';
+import { SIZE, CENTER } from '../common/map';
 
 var requestObject = {
     x: 0,
@@ -32,6 +34,9 @@ function Game(gameCanvas, userName) {
 Game.prototype.init = function () {
     this._hero = new Hero()
     this._map = new GameMap()
+
+
+    this._fog = new Fog(CENTER, Math.max(SIZE.x, SIZE.y))
 }
 
 Game.prototype.onMouseMove = function (e) {
@@ -54,6 +59,7 @@ Game.prototype.start = function () {
 
         var positions = data.p
         var bullets = data.b
+        var fog = data.f
         this._enemies.length = 0
         this._bullets.length = 0
 
@@ -75,6 +81,10 @@ Game.prototype.start = function () {
             this._bullets.push(b)
         }
 
+
+
+        this._fog.setPosition(fog.x, fog.y)
+        this._fog.setRadius(fog.r)
     })
 
     this.update()
@@ -104,8 +114,6 @@ Game.prototype.update = function () {
     }
 
 
-
-
     let cameraX
     let cameraY
     if (this._hero.getX() < 350) {
@@ -124,9 +132,9 @@ Game.prototype.update = function () {
         cameraY = this._hero.getY() - 350
     }
 
-
     this._camera.setPosition(cameraX, cameraY)
     this._hero.draw(this._camera, ctx)
+    this._fog.draw(this._camera, ctx)
 
     requestAnimationFrame(this.update)
     return

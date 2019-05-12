@@ -23,6 +23,7 @@ AssetsManager.addImage(1, '/images/red.png')
 AssetsManager.addImage("angel", '/images/angel.png')
 AssetsManager.addImage("happy", '/images/happy.png')
 AssetsManager.addImage("bullet", '/images/bullet.png')
+AssetsManager.addImage("smoke", '/images/smoke.png')
 
 AssetsManager.onReady(function () {
 
