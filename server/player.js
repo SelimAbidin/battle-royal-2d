@@ -1,6 +1,6 @@
 
 const { PLAYER } = require('../types')
-
+const { lousyCollision } = require('./map-collision')
 
 let fireTime = 1
 class Player {
@@ -16,6 +16,7 @@ class Player {
         this._socket = socket
         this._isMouseDown = false
         this._fireCount = fireTime
+        this._tempPos = {}
         this._messageReceive = this._messageReceive.bind(this)
         socket.on('USER', this._messageReceive)
     }
@@ -68,8 +69,16 @@ class Player {
     }
 
     update(deltaTime) {
+
         this._fireCount += deltaTime
-        this.setPosition(this._x + this._vx * deltaTime, this._y + this._vy * deltaTime)
+        let newX = lousyCollision(this._x,
+            this._x + this._vx * deltaTime,
+            this._y,
+            this._y + this._vy * deltaTime,
+            this._tempPos
+        )
+
+        this.setPosition(this._tempPos.x, this._tempPos.y)
         this._vx = 0
         this._vy = 0
     }

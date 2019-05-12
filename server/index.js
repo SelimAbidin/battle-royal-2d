@@ -25,7 +25,7 @@ app.get('/users.html', (req, res) => {
 
 function createUser(name, userID, socket, type) {
     let player = new Player(userID, name, socket)
-    player.setPosition(4650, 500)
+    player.setPosition(600, 600)
     game.addUser(player)
 }
 
