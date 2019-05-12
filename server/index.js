@@ -42,6 +42,14 @@ let deltaTime = Date.now()
 setInterval(() => {
 
     game.update((Date.now() - deltaTime) / 1000)
+
+    if (game.isOver()) {
+        console.log('Game over');
+        let gameEndData = game.serialize()
+        io.emit('UPDATE', gameEndData)
+        return
+    }
+
     deltaTime = Date.now()
     io.emit('UPDATE', game.serialize())
 

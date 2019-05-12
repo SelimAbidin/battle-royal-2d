@@ -42,6 +42,7 @@ class Game {
         this._users = []
         this._bullets = []
         this._clearAreaRadius = 3000
+        this._isOver = false
     }
 
     addUser(player) {
@@ -57,9 +58,18 @@ class Game {
         this._bullets.push(new Bullet(bulletModel.x, bulletModel.y, bulletModel.vx, bulletModel.vy))
     }
 
+    isOver() {
+        return this._isOver
+    }
+
     update(deltaTme) {
 
         this._clearAreaRadius -= deltaTme * 30
+
+        if (this._clearAreaRadius <= 0) {
+            this._isOver = true
+            return
+        }
 
         for (let i = 0; i < this._bullets.length; i++) {
             const bullet = this._bullets[i];

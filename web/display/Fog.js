@@ -27,7 +27,6 @@ class Fog extends Object2D {
     draw(camera, ctx) {
         if (this._radius === null) return
 
-        console.log(this._radius);
 
         ctx.beginPath();
         let pattern = this.getPattern(ctx)
