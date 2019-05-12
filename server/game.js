@@ -42,7 +42,14 @@ class Game {
         this._users = []
         this._bullets = []
         this._clearAreaRadius = 3000
+        this._nextArea = 3000
+        this._onTimerToShirink = this._onTimerToShirink.bind(this)
+        this._interval = setInterval(this._onTimerToShirink, 25000)
         this._isOver = false
+    }
+
+    _onTimerToShirink() {
+        this._nextArea -= 1000
     }
 
     addUser(player) {
@@ -64,10 +71,15 @@ class Game {
 
     update(deltaTme) {
 
-        this._clearAreaRadius -= deltaTme * 30
+        if (this._clearAreaRadius > this._nextArea) {
+            this._clearAreaRadius -= deltaTme * 120
+        } else {
+            this._clearAreaRadius = this._nextArea
+        }
 
         if (this._clearAreaRadius <= 0) {
             this._isOver = true
+            this._clearAreaRadius = 0
             return
         }
 
