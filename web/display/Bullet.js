@@ -6,7 +6,7 @@ Bullet.prototype.constractor = Bullet
 
 function Bullet() {
     Sprite.apply(this, [AssetsManager.getDrawableByKey("bullet")])
-    this.setSize(10, 10)
+    this.setSize(30, 30)
     this._vx = 0
     this._vy = 0
 }

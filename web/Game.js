@@ -93,6 +93,7 @@ Game.prototype.start = function () {
 window.cameraX = 0
 Game.prototype.update = function () {
     var ctx = this._ctx
+
     ctx.clearRect(0, 0, 700, 700)
     this._map.draw(this._camera, ctx)
 
@@ -135,6 +136,7 @@ Game.prototype.update = function () {
     this._camera.setPosition(cameraX, cameraY)
     this._hero.draw(this._camera, ctx)
     this._fog.draw(this._camera, ctx)
+
 
     requestAnimationFrame(this.update)
     return

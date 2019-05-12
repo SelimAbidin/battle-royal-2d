@@ -22,8 +22,8 @@ class Bullet {
     }
 
     update(deltaTime) {
-        this._x += (this._vx * 300) * deltaTime
-        this._y += (this._vy * 300) * deltaTime
+        this._x += (this._vx * 600) * deltaTime
+        this._y += (this._vy * 600) * deltaTime
     }
 
     serialize() {
