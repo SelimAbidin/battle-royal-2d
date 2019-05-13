@@ -95,24 +95,6 @@ Game.prototype.update = function () {
     var ctx = this._ctx
 
     ctx.clearRect(0, 0, 700, 700)
-    this._map.draw(this._camera, ctx)
-
-    requestObject.x = this._hero.getMoveX()
-    requestObject.y = this._hero.getMoveY()
-    requestObject.md = this._mouseDown
-    requestObject.mp = this._mousePosition
-
-    socket.emit('USER', requestObject)
-
-    for (let i = 0; i < this._enemies.length; i++) {
-        var enemy = this._enemies[i];
-        enemy.draw(this._camera, ctx)
-    }
-
-    for (let i = 0; i < this._bullets.length; i++) {
-        var bullet = this._bullets[i];
-        bullet.draw(this._camera, ctx)
-    }
 
 
     let cameraX
@@ -134,6 +116,31 @@ Game.prototype.update = function () {
     }
 
     this._camera.setPosition(cameraX, cameraY)
+
+
+    this._map.draw(this._camera, ctx)
+
+    requestObject.x = this._hero.getMoveX()
+    requestObject.y = this._hero.getMoveY()
+    requestObject.md = this._mouseDown
+    requestObject.mp = this._mousePosition
+
+    socket.emit('USER', requestObject)
+
+    for (let i = 0; i < this._enemies.length; i++) {
+        var enemy = this._enemies[i];
+        enemy.draw(this._camera, ctx)
+    }
+
+    for (let i = 0; i < this._bullets.length; i++) {
+        var bullet = this._bullets[i];
+        bullet.draw(this._camera, ctx)
+    }
+
+
+
+
+
     this._hero.draw(this._camera, ctx)
     this._fog.draw(this._camera, ctx)
 
