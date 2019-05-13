@@ -111,6 +111,10 @@ class Player {
         // this._vy = 0
     }
 
+    damage(v) {
+        this._life -= v
+    }
+
     setPosition(x, y) {
         this._x = x
         this._y = y

@@ -1,5 +1,6 @@
 const { BULLET } = require('../types')
 const { Player } = require('./player')
+const { ClearArea } = require('./clearArea')
 const { CENTER } = require('../common/map')
 
 class Bullet {
@@ -41,16 +42,19 @@ class Game {
     constructor() {
         this._users = []
         this._bullets = []
-        this._clearAreaRadius = 2000
-        this._nextArea = 2000
-        this._onTimerToShirink = this._onTimerToShirink.bind(this)
-        this._interval = setInterval(this._onTimerToShirink, 25000)
+
+        this._clearArea = new ClearArea(2000)
+
+        // this._clearAreaRadius = 2000
+        // this._nextArea = 2000
+        // // this._onTimerToShirink = this._onTimerToShirink.bind(this)
+        // this._interval = setInterval(this._onTimerToShirink, 25000)
         this._isOver = false
     }
 
-    _onTimerToShirink() {
-        // this._nextArea -= 1000
-    }
+    // _onTimerToShirink() {
+    //     // this._nextArea -= 1000
+    // }
 
     addUser(player) {
         this._users.push(player)
@@ -71,17 +75,7 @@ class Game {
 
     update(deltaTme) {
 
-        if (this._clearAreaRadius > this._nextArea) {
-            this._clearAreaRadius -= deltaTme * 120
-        } else {
-            this._clearAreaRadius = this._nextArea
-        }
-
-        if (this._clearAreaRadius <= 0) {
-            this._isOver = true
-            this._clearAreaRadius = 0
-            return
-        }
+        this._clearArea.update(deltaTme)
 
         for (let i = 0; i < this._bullets.length; i++) {
             const bullet = this._bullets[i];
@@ -96,6 +90,11 @@ class Game {
         for (let i = 0; i < this._users.length; i++) {
             const user = this._users[i];
             user.update(deltaTme)
+
+            if (!this._clearArea.isInside(user)) {
+                user.damage(deltaTme)
+            }
+
             if (user instanceof Player) {
                 if (user.needsToFire()) {
                     let bulletModel = user.createBullet()
@@ -108,9 +107,8 @@ class Game {
     }
 
     serialize() {
-
         return {
-            f: { r: this._clearAreaRadius, x: CENTER.x, y: CENTER.y },
+            f: { r: this._clearArea.getRadius(), x: this._clearArea.x, y: this._clearArea.y },
             p: this._users.map(player => player.serialize()),
             b: this._bullets.map(bullet => bullet.serialize()),
         }

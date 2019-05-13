@@ -146,7 +146,7 @@ Game.prototype.update = function () {
     ctx.font = "bold 25px Arial";
     ctx.fillStyle = "#00FF00";
     ctx.textAlign = "left";
-    ctx.fillText('Life :' + this._hero.getLife(), 10, 30);
+    ctx.fillText('Life :' + Math.ceil(this._hero.getLife()), 10, 30);
 
     requestAnimationFrame(this.update)
     return
