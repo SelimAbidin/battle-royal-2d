@@ -11,12 +11,21 @@ class Player {
         this._y = 0
         this._vx = 0
         this._vy = 0
-        this._speed = 500
+        // this._speed = 500
+        this._speed = 0.5
+        this._friction = 0.95
         this._type = PLAYER
         this._socket = socket
         this._isMouseDown = false
         this._fireCount = fireTime
         this._tempPos = {}
+
+        // this._xSpeed = 0
+        // this._ySpeed = 0
+
+        this._xRoute = 0
+        this._yRoute = 0
+
         this._messageReceive = this._messageReceive.bind(this)
         socket.on('USER', this._messageReceive)
     }
@@ -27,17 +36,19 @@ class Player {
 
     _messageReceive(message) {
 
-        if (message.x > 0) {
-            this._vx = this._speed * 2
-        } else if (message.x < 0) {
-            this._vx = -this._speed * 2
-        }
+        this._xRoute = message.x
+        this._yRoute = message.y
+        // if (message.x > 0) {
+        //     // this._vx = this._speed * 2
+        // } else if (message.x < 0) {
+        //     this._vx = -this._speed * 2
+        // }
 
-        if (message.y > 0) {
-            this._vy = this._speed * 2
-        } else if (message.y < 0) {
-            this._vy = -this._speed * 2
-        }
+        // if (message.y > 0) {
+        //     this._vy = this._speed * 2
+        // } else if (message.y < 0) {
+        //     this._vy = -this._speed * 2
+        // }
 
         this._isMouseDown = message.md
         this._mousePosition = message.mp
@@ -71,16 +82,33 @@ class Player {
     update(deltaTime) {
 
         this._fireCount += deltaTime
-        let newX = lousyCollision(this._x,
-            this._x + this._vx * deltaTime,
+
+        if (this._xRoute === -1) {
+            this._vx -= this._speed
+        } else if (this._xRoute === 1) {
+            this._vx += this._speed
+        }
+
+        if (this._yRoute === -1) {
+            this._vy -= this._speed
+        } else if (this._yRoute === 1) {
+            this._vy += this._speed
+        }
+
+
+        this._vx *= this._friction
+        this._vy *= this._friction
+
+        lousyCollision(this._x,
+            this._x + this._vx,
             this._y,
-            this._y + this._vy * deltaTime,
+            this._y + this._vy,
             this._tempPos
         )
 
         this.setPosition(this._tempPos.x, this._tempPos.y)
-        this._vx = 0
-        this._vy = 0
+        // this._vx = 0
+        // this._vy = 0
     }
 
     setPosition(x, y) {

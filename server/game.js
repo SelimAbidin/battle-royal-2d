@@ -41,15 +41,15 @@ class Game {
     constructor() {
         this._users = []
         this._bullets = []
-        this._clearAreaRadius = 3000
-        this._nextArea = 3000
+        this._clearAreaRadius = 2000
+        this._nextArea = 2000
         this._onTimerToShirink = this._onTimerToShirink.bind(this)
         this._interval = setInterval(this._onTimerToShirink, 25000)
         this._isOver = false
     }
 
     _onTimerToShirink() {
-        this._nextArea -= 1000
+        // this._nextArea -= 1000
     }
 
     addUser(player) {
@@ -99,7 +99,9 @@ class Game {
             if (user instanceof Player) {
                 if (user.needsToFire()) {
                     let bulletModel = user.createBullet()
-                    this.addBullet(bulletModel)
+                    if (bulletModel) {
+                        this.addBullet(bulletModel)
+                    }
                 }
             }
         }
