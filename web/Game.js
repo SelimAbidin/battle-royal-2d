@@ -67,6 +67,7 @@ Game.prototype.start = function () {
             var position = positions[i];
             if (position.name === this._name) {
                 this._hero.setPosition(position.x, position.y)
+                this._hero.setLife(position.life)
             } else {
                 var enemy = new Enemy(position.name)
                 enemy.setPosition(position.x, position.y)
@@ -138,12 +139,14 @@ Game.prototype.update = function () {
     }
 
 
-
-
-
     this._hero.draw(this._camera, ctx)
     this._fog.draw(this._camera, ctx)
 
+
+    ctx.font = "bold 25px Arial";
+    ctx.fillStyle = "#00FF00";
+    ctx.textAlign = "left";
+    ctx.fillText('Life :' + this._hero.getLife(), 10, 30);
 
     requestAnimationFrame(this.update)
     return

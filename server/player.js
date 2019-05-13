@@ -12,6 +12,7 @@ class Player {
         this._vx = 0
         this._vy = 0
         // this._speed = 500
+        this._life = 100
         this._speed = 0.5
         this._friction = 0.95
         this._type = PLAYER
@@ -119,6 +120,7 @@ class Player {
         return {
             x: this._x,
             y: this._y,
+            life: this._life,
             name: this._name,
             type: this._type,
         }

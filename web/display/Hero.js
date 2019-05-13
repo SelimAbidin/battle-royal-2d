@@ -40,6 +40,14 @@ Hero.prototype.onKeyUp = function (evt) {
     }
 }
 
+Hero.prototype.setLife = function (life) {
+    this._life = life
+}
+
+Hero.prototype.getLife = function () {
+    return this._life
+}
+
 Hero.prototype.getMoveY = function (ctx) {
     return this._vy
 }
@@ -53,7 +61,7 @@ Hero.prototype.draw = function (camera, context) {
     context.font = "15px Arial";
     context.fillStyle = "white";
     context.textAlign = "center";
-    context.fillText(this._name, this._x - camera.getX(), (this._y + 50) - camera.getY());
+    context.fillText(this._name, this._x - camera.getX(), (this._y + 40) - camera.getY());
     // context.strokeStyle = "black";
     // context.strokeText(this._name, this._x - camera.getX(), (this._y + 50) - camera.getY());
 }
