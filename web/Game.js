@@ -32,7 +32,7 @@ function Game(gameCanvas, userName) {
 }
 
 Game.prototype.init = function () {
-    this._hero = new Hero()
+    this._hero = new Hero(this._name)
     this._map = new GameMap()
 
 

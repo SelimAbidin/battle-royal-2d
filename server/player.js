@@ -105,7 +105,6 @@ class Player {
             this._y + this._vy,
             this._tempPos
         )
-
         this.setPosition(this._tempPos.x, this._tempPos.y)
         // this._vx = 0
         // this._vy = 0

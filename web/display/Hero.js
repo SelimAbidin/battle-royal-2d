@@ -4,11 +4,12 @@ import { AssetsManager } from "../AssetsManager";
 Hero.prototype = Object.create(Sprite.prototype)
 Hero.prototype.constractor = Hero
 
-function Hero() {
+function Hero(name) {
     Sprite.apply(this, [AssetsManager.getDrawableByKey("angel")])
     this.setSize(40, 40)
     this._vx = 0
     this._vy = 0
+    this._name = name
     this.onKeyDown = this.onKeyDown.bind(this)
     this.onKeyUp = this.onKeyUp.bind(this)
     document.addEventListener('keydown', this.onKeyDown)
@@ -45,6 +46,16 @@ Hero.prototype.getMoveY = function (ctx) {
 
 Hero.prototype.getMoveX = function (ctx) {
     return this._vx
+}
+
+Hero.prototype.draw = function (camera, context) {
+    Sprite.prototype.draw.apply(this, arguments)
+    context.font = "15px Arial";
+    context.fillStyle = "white";
+    context.textAlign = "center";
+    context.fillText(this._name, this._x - camera.getX(), (this._y + 50) - camera.getY());
+    // context.strokeStyle = "black";
+    // context.strokeText(this._name, this._x - camera.getX(), (this._y + 50) - camera.getY());
 }
 
 export { Hero }
