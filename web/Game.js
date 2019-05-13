@@ -68,7 +68,7 @@ Game.prototype.start = function () {
             if (position.name === this._name) {
                 this._hero.setPosition(position.x, position.y)
             } else {
-                var enemy = new Enemy()
+                var enemy = new Enemy(position.name)
                 enemy.setPosition(position.x, position.y)
                 this._enemies.push(enemy)
             }
