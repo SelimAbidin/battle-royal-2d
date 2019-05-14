@@ -94,6 +94,7 @@ Game.prototype.start = function () {
 window.cameraX = 0
 Game.prototype.update = function () {
     var ctx = this._ctx
+    ctx.translate(0.5, 0.5);
 
     ctx.clearRect(0, 0, 700, 700)
 
@@ -147,6 +148,8 @@ Game.prototype.update = function () {
     ctx.fillStyle = "#00FF00";
     ctx.textAlign = "left";
     ctx.fillText('Life :' + Math.ceil(this._hero.getLife()), 10, 30);
+
+    ctx.translate(-0.5, -0.5);
 
     requestAnimationFrame(this.update)
     return

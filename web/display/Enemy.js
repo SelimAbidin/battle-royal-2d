@@ -5,7 +5,7 @@ Enemy.prototype = Object.create(Sprite.prototype)
 Enemy.prototype.constractor = Enemy
 
 function Enemy(name) {
-    Sprite.apply(this, [AssetsManager.getDrawableByKey("happy")])
+    Sprite.apply(this, [AssetsManager.getDrawableByKey("enemy")])
     this.setSize(40, 40)
     this._vx = 0
     this._vy = 0

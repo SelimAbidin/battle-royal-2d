@@ -5,7 +5,7 @@ Hero.prototype = Object.create(Sprite.prototype)
 Hero.prototype.constractor = Hero
 
 function Hero(name) {
-    Sprite.apply(this, [AssetsManager.getDrawableByKey("angel")])
+    Sprite.apply(this, [AssetsManager.getDrawableByKey("hero")])
     this.setSize(40, 40)
     this._vx = 0
     this._vy = 0
