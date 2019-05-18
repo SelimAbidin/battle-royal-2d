@@ -61,9 +61,7 @@ Hero.prototype.draw = function (camera, context) {
     context.font = "15px Arial";
     context.fillStyle = "white";
     context.textAlign = "center";
-    context.fillText(this._name, this._x - camera.getX(), (this._y + 40) - camera.getY());
-    // context.strokeStyle = "black";
-    // context.strokeText(this._name, this._x - camera.getX(), (this._y + 50) - camera.getY());
+    context.fillText(this._name, this._x, this._y + 40);
 }
 
 export { Hero }

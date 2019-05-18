@@ -27,18 +27,14 @@ class Fog extends Object2D {
     draw(camera, ctx) {
         if (this._radius === null) return
 
-
         ctx.beginPath();
         let pattern = this.getPattern(ctx)
-        ctx.translate(-camera.getX(), -camera.getY())
         ctx.fillStyle = pattern
-        // let x = this._center.x
         let x = this._x
         let y = this._y
         ctx.arc(x, y, this._maxRadius, 0, Math.PI * 2)
         ctx.arc(x, y, this._radius, 0, Math.PI * 2, true)
         ctx.fill()
-        ctx.translate(camera.getX(), camera.getY())
     }
 
 

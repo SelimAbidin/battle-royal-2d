@@ -94,10 +94,7 @@ Game.prototype.start = function () {
 window.cameraX = 0
 Game.prototype.update = function () {
     var ctx = this._ctx
-    ctx.translate(0.5, 0.5);
-
     ctx.clearRect(0, 0, 700, 700)
-
 
     let cameraX
     let cameraY
@@ -118,7 +115,7 @@ Game.prototype.update = function () {
     }
 
     this._camera.setPosition(cameraX, cameraY)
-
+    this._camera.begin(ctx)
 
     this._map.draw(this._camera, ctx)
 
@@ -143,13 +140,14 @@ Game.prototype.update = function () {
     this._hero.draw(this._camera, ctx)
     this._fog.draw(this._camera, ctx)
 
+    this._camera.end(ctx)
+
 
     ctx.font = "bold 25px Arial";
     ctx.fillStyle = "#00FF00";
     ctx.textAlign = "left";
     ctx.fillText('Life :' + Math.ceil(this._hero.getLife()), 10, 30);
 
-    ctx.translate(-0.5, -0.5);
 
     requestAnimationFrame(this.update)
     return
