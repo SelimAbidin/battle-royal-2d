@@ -10,15 +10,16 @@ function GameMap() {
 
 GameMap.prototype.init = function () {
 
-    let half = TILE_SIZE * 0.5
+    let tileSize = TILE_SIZE
+    let half = tileSize * 0.5
     for (var i = 0; i < _map.length; i++) {
         var row = _map[i]
         for (var j = 0; j < row.length; j++) {
             var terrainType = row[j]
             var drawable = AssetsManager.getDrawableByKey(terrainType)
             var sprite = new Sprite(drawable)
-            sprite.setSize(TILE_SIZE, TILE_SIZE)
-            sprite.setPosition(half + (i * TILE_SIZE), half + (j * TILE_SIZE))
+            sprite.setSize(tileSize + 1, tileSize + 1)
+            sprite.setPosition(half + (i * tileSize), half + (j * tileSize))
             this._sprites.push(sprite)
         }
     }
