@@ -7,11 +7,16 @@ Camera.prototype = Object.create(Object2D.prototype)
 Camera.prototype.constractor = Camera
 
 Camera.prototype.begin = function (ctx) {
+    ctx.save();
+    // ctx.scale(0.2, 0.2)
     ctx.translate(-this._x, -this._y)
 }
 
 Camera.prototype.end = function (ctx) {
-    ctx.translate(this._x, this._y)
+    // ctx.scale(1, 1)
+    // ctx.translate(this._x, this._y)
+    ctx.restore();
+
 }
 
 

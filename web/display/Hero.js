@@ -56,7 +56,7 @@ Hero.prototype.getMoveX = function (ctx) {
     return this._vx
 }
 
-Hero.prototype.draw = function (camera, context) {
+Hero.prototype.draw = function (context) {
     Sprite.prototype.draw.apply(this, arguments)
     context.font = "15px Arial";
     context.fillStyle = "white";

@@ -13,7 +13,7 @@ Sprite.prototype.getGraphic = function () {
     return this._drawable.image
 }
 
-Sprite.prototype.draw = function (camera, context) {
+Sprite.prototype.draw = function (context) {
     var halfW = this._width / 2
     var halfH = this._height / 2
     // var x = (this._x - camera.getX()) - halfW

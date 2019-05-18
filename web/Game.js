@@ -117,7 +117,7 @@ Game.prototype.update = function () {
     this._camera.setPosition(cameraX, cameraY)
     this._camera.begin(ctx)
 
-    this._map.draw(this._camera, ctx)
+    this._map.draw(ctx)
 
     requestObject.x = this._hero.getMoveX()
     requestObject.y = this._hero.getMoveY()
@@ -128,17 +128,17 @@ Game.prototype.update = function () {
 
     for (let i = 0; i < this._enemies.length; i++) {
         var enemy = this._enemies[i];
-        enemy.draw(this._camera, ctx)
+        enemy.draw(ctx)
     }
 
     for (let i = 0; i < this._bullets.length; i++) {
         var bullet = this._bullets[i];
-        bullet.draw(this._camera, ctx)
+        bullet.draw(ctx)
     }
 
 
-    this._hero.draw(this._camera, ctx)
-    this._fog.draw(this._camera, ctx)
+    this._hero.draw(ctx)
+    this._fog.draw(ctx)
 
     this._camera.end(ctx)
 
