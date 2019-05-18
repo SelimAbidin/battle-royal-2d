@@ -13,7 +13,6 @@ var requestObject = {
     y: 0,
     md: false, // mouse down
 }
-
 function Game(gameCanvas, userName) {
     this._gameCanvas = gameCanvas
     this._name = userName
@@ -48,12 +47,20 @@ Game.prototype.onMouseMove = function (e) {
 
 Game.prototype.onMouseDown = function () {
     this._mouseDown = true
+    this._hero.startAmmowLoad()
 }
 Game.prototype.onMouseUp = function () {
     this._mouseDown = false
+    this._hero.releaseAmmo()
 }
 
+let deltaTimeTemp
 Game.prototype.start = function () {
+
+    this._frame = {
+        deltaTime: 0,
+        context: this._ctx
+    }
 
     socket.on('UPDATE', (data) => {
 
@@ -88,11 +95,15 @@ Game.prototype.start = function () {
         this._fog.setRadius(fog.r)
     })
 
+    deltaTimeTemp = Date.now() - 16
+
     this.update()
 }
 
-window.cameraX = 0
 Game.prototype.update = function () {
+
+    this._frame.deltaTime = Date.now() - deltaTimeTemp
+
     var ctx = this._ctx
     ctx.clearRect(0, 0, 700, 700)
 
@@ -148,7 +159,7 @@ Game.prototype.update = function () {
     ctx.textAlign = "left";
     ctx.fillText('Life :' + Math.ceil(this._hero.getLife()), 10, 30);
 
-
+    deltaTimeTemp = Date.now()
     requestAnimationFrame(this.update)
     return
 
