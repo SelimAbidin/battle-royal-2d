@@ -64,22 +64,14 @@ class Player {
         if (!this._mousePosition) return
 
         this._fireCount = 0
-
-        // let mousePosition = this._mousePosition
         let dx = this._mousePosition.x - 350
         let dy = this._mousePosition.y - 350
-        let angle = Math.atan2(dy, dx)
-
-        let vx = Math.cos(angle) * 1.5
-        let vy = Math.sin(angle) * 1.5
 
         return {
             x: this._x,
             y: this._y,
             targetX: this._x + dx,
             targetY: this._y + dy,
-            vx,
-            vy
         }
     }
 
