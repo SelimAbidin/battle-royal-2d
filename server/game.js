@@ -43,8 +43,8 @@ class Bullet {
     update(deltaTime) {
 
         this._time += deltaTime
-        if (this._time > 1500) {
-            this.isDead = true
+        if (this._time > 0.5) {
+            this._isDead = true
         }
 
         // this._x += this._vx * 600 * deltaTime
@@ -62,12 +62,15 @@ class Bullet {
     }
 
     serialize() {
+
+        // TODO with ID matching could be much usefull. Client could cache it.
         return {
             // x: this._x,
             // y: this._y,
             // dr: this._distRatio,
             x: this._x,
             y: this._y,
+            t: this._time,
             tx: this._targetX,
             ty: this._targetY,
             type: BULLET,
@@ -118,8 +121,10 @@ class Game {
 
         for (let i = 0; i < this._bullets.length; i++) {
             const bullet = this._bullets[i];
+
             if (bullet.isDead()) {
                 this._bullets.splice(i, 1)
+                i--
                 continue
             }
             bullet.update(deltaTme)

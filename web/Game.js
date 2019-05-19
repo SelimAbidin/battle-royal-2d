@@ -84,8 +84,8 @@ Game.prototype.start = function () {
 
         for (let i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];
-            let b = new Bullet()
-            b.setPosition(bullet.x, bullet.y)
+            let b = new Bullet(bullet)
+            // b.setPosition(bullet.x, bullet.y)
             this._bullets.push(b)
         }
 
@@ -142,13 +142,17 @@ Game.prototype.update = function () {
         enemy.draw(ctx)
     }
 
+
+
+
+    this._hero.draw(ctx)
+
+
     for (let i = 0; i < this._bullets.length; i++) {
         var bullet = this._bullets[i];
         bullet.draw(ctx)
     }
 
-
-    this._hero.draw(ctx)
     this._fog.draw(ctx)
 
     this._camera.end(ctx)
