@@ -11,7 +11,12 @@ Bullet.prototype.constractor = Bullet
 // }
 
 
-function tween(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t }
+//easeInOutQuart:
+let tween = function (t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t }
+
+
+
+// function tween(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t }
 
 function Bullet(model) {
     Sprite.apply(this, [AssetsManager.getDrawableByKey("bullet")])
@@ -19,7 +24,7 @@ function Bullet(model) {
     let dy = model.ty - model.y
     let dist = Math.sqrt(dx * dx + dy * dy)
 
-    let t = tween(model.t * 2)
+    let t = tween(model.t * 1)
     let d = t * dist
     let angle = Math.atan2(dy, dx)
     let x = model.x + Math.cos(angle) * d
@@ -27,7 +32,8 @@ function Bullet(model) {
 
 
     let size = Math.abs(Math.sin(t * 3))
-    this.setSize(15 * size + 15, 15 * size + 15)
+    size = 15 * size + 15
+    this.setSize(size, size)
     this.setPosition(x, y)
 }
 

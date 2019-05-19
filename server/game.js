@@ -20,7 +20,7 @@ class Bullet {
     update(deltaTime) {
 
         this._time += deltaTime
-        if (this._time > 0.5) {
+        if (this._time > 1.0) {
             this._isDead = true
         }
 

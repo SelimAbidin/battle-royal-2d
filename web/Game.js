@@ -7,6 +7,7 @@ import { PLAYER } from '../types'
 import { Camera } from './display/Camera';
 import { Fog } from './display/Fog';
 import { SIZE, CENTER } from '../common/map';
+import { DropArea } from './display/DropArea';
 
 var requestObject = {
     x: 0,
@@ -22,6 +23,7 @@ function Game(gameCanvas, userName) {
     this.onMouseMove = this.onMouseMove.bind(this)
     this._enemies = []
     this._bullets = []
+    this._drops = []
     this._ctx = gameCanvas.getContext('2d')
     this._camera = new Camera()
     this._mouseDown = false
@@ -69,6 +71,7 @@ Game.prototype.start = function () {
         var fog = data.f
         this._enemies.length = 0
         this._bullets.length = 0
+        this._drops.length = 0
 
         for (var i = 0; i < positions.length; i++) {
             var position = positions[i];
@@ -85,8 +88,10 @@ Game.prototype.start = function () {
         for (let i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];
             let b = new Bullet(bullet)
-            // b.setPosition(bullet.x, bullet.y)
+            let drop = new DropArea()
+            drop.setPosition(bullet.tx, bullet.ty)
             this._bullets.push(b)
+            this._drops.push(drop)
         }
 
 
@@ -137,15 +142,19 @@ Game.prototype.update = function () {
 
     socket.emit('USER', requestObject)
 
+
+    for (let i = 0; i < this._drops.length; i++) {
+        var drop = this._drops[i];
+        drop.draw(ctx)
+    }
+
     for (let i = 0; i < this._enemies.length; i++) {
         var enemy = this._enemies[i];
         enemy.draw(ctx)
     }
 
-
-
-
     this._hero.draw(ctx)
+
 
 
     for (let i = 0; i < this._bullets.length; i++) {
