@@ -142,7 +142,6 @@ Game.prototype.update = function () {
 
     socket.emit('USER', requestObject)
 
-
     for (let i = 0; i < this._drops.length; i++) {
         var drop = this._drops[i];
         drop.draw(ctx)
@@ -155,17 +154,13 @@ Game.prototype.update = function () {
 
     this._hero.draw(ctx)
 
-
-
     for (let i = 0; i < this._bullets.length; i++) {
         var bullet = this._bullets[i];
         bullet.draw(ctx)
     }
 
     this._fog.draw(ctx)
-
     this._camera.end(ctx)
-
 
     ctx.font = "bold 25px Arial";
     ctx.fillStyle = "#00FF00";

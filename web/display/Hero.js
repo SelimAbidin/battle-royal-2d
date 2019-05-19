@@ -71,18 +71,18 @@ Hero.prototype.releaseAmmo = function (ctx) {
 Hero.prototype.draw = function (context) {
     Sprite.prototype.draw.apply(this, arguments)
 
-    if (this._loadingAmmo) {
-        this._ammoPower = Math.min(this._ammoPower + 16, 1000)
-        let x = this._x - (this._width / 2)
-        let y = this._y + (this._height / 2)
-        context.beginPath()
-        context.fillStyle = "white";
-        context.rect(x, y + 1, this._width, 10)
-        context.fill()
-        context.stroke()
-        context.fillStyle = "#ff0000";
-        context.fillRect(x, y + 1, this._width * (this._ammoPower / 1000), 10)
-    }
+    // if (this._loadingAmmo) {
+    //     this._ammoPower = Math.min(this._ammoPower + 16, 1000)
+    //     let x = this._x - (this._width / 2)
+    //     let y = this._y + (this._height / 2)
+    //     context.beginPath()
+    //     context.fillStyle = "white";
+    //     context.rect(x, y + 1, this._width, 10)
+    //     context.fill()
+    //     context.stroke()
+    //     context.fillStyle = "#ff0000";
+    //     context.fillRect(x, y + 1, this._width * (this._ammoPower / 1000), 10)
+    // }
 
     // context.font = "15px Arial";
     // context.fillStyle = "white";
