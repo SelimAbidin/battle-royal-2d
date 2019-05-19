@@ -65,6 +65,7 @@ class Player {
 
         this._fireCount = 0
 
+        // let mousePosition = this._mousePosition
         let dx = this._mousePosition.x - 350
         let dy = this._mousePosition.y - 350
         let angle = Math.atan2(dy, dx)
@@ -75,6 +76,8 @@ class Player {
         return {
             x: this._x,
             y: this._y,
+            targetX: this._x + dx,
+            targetY: this._y + dy,
             vx,
             vy
         }

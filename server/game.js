@@ -4,33 +4,72 @@ const { ClearArea } = require('./clearArea')
 const { CENTER } = require('../common/map')
 
 class Bullet {
-    constructor(x, y, vx, vy) {
+    constructor(x, y, vx, vy, targetX, targetY) {
         this._x = x
         this._y = y
         this._vx = vx
         this._vy = vy
+        this._targetX = targetX
+        this._targetY = targetY
+
+        let dx = targetX - x
+        let dy = targetY - y
+
+        // console.log("targetX", targetX);
+
+        // console.log(this._targetX, this._targetY);
+        // console.log(x, y);
+        // console.log(x, y, targetX, targetY);
+
+
+        this._fullDist = Math.sqrt(dx * dx + dy * dy)
+
+        this._time = 0
+
+        this._distRatio = 1
         this._isDead = false
-        this.kill = this.kill.bind(this)
-        setTimeout(this.kill, 1000)
+        // this.kill = this.kill.bind(this)
+        // setTimeout(this.kill, 1000)
     }
 
-    kill() {
-        this._isDead = true
-    }
+    // kill() {
+    //     this._isDead = true
+    // }
 
     isDead() {
         return this._isDead
     }
 
     update(deltaTime) {
-        this._x += (this._vx * 600) * deltaTime
-        this._y += (this._vy * 600) * deltaTime
+
+        this._time += deltaTime
+        if (this._time > 1500) {
+            this.isDead = true
+        }
+
+        // this._x += this._vx * 600 * deltaTime
+        // this._y += this._vy * 600 * deltaTime
+
+        // let dx = this._x - this._targetX
+        // let dy = this._y - this._targetY
+        // let dist = Math.sqrt(dx * dx + dy * dy)
+        // this._distRatio = 2 - (dist / this._fullDist)
+
+        // if (dist <= 10) {
+        //     this._isDead = true
+        // }
+
     }
 
     serialize() {
         return {
+            // x: this._x,
+            // y: this._y,
+            // dr: this._distRatio,
             x: this._x,
             y: this._y,
+            tx: this._targetX,
+            ty: this._targetY,
             type: BULLET,
         }
     }
@@ -66,7 +105,7 @@ class Game {
     }
 
     addBullet(bulletModel) {
-        this._bullets.push(new Bullet(bulletModel.x, bulletModel.y, bulletModel.vx, bulletModel.vy))
+        this._bullets.push(new Bullet(bulletModel.x, bulletModel.y, bulletModel.vx, bulletModel.vy, bulletModel.targetX, bulletModel.targetY))
     }
 
     isOver() {
