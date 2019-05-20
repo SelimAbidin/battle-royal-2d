@@ -94,8 +94,19 @@ class Player {
         this.setPosition(this._tempPos.x, this._tempPos.y)
     }
 
+    isDead() {
+        return  this._life  <= 0
+    }
+
+    destroy() {
+        // this.socket.
+    }
+
     damage(v) {
         this._life -= v
+        if(this._life < 0) {
+            this._life = 0
+        }
     }
 
     setPosition(x, y) {

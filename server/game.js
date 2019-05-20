@@ -49,7 +49,8 @@ class Bullet {
 }
 
 const STATUS = {
-    WAITING_PLAYERS: 0
+    WAITING_PLAYERS: 0,
+    PLAYING: 1,
 }
 
 class Game {
@@ -61,6 +62,7 @@ class Game {
         this._clearArea = new ClearArea(2000)
         this._isOver = false
         
+        this._statusTimer = 0
         this.setStatus(STATUS.WAITING_PLAYERS)
     }
 
@@ -70,8 +72,16 @@ class Game {
             this._gameStatus = status
             if(status === STATUS.WAITING_PLAYERS) {
                 this._allowCollision = false
-            }
-
+                this._statusTimer = Date.now()
+                setTimeout( e => this.setStatus(STATUS.PLAYING), 30 * 1000 )
+            } else if (status === STATUS.PLAYING) {
+                this._users.forEach(user => {
+                    let x = (Math.random() * 500) + 500
+                    let y = Math.random() * 500 + 500
+                    user.setPosition(x,y)
+                })
+                this._allowCollision = true
+            } 
         }
 
     }
@@ -124,6 +134,12 @@ class Game {
                     }
                 }
             }
+
+            // I know I check this before collision
+            if(user.isDead()) {
+                this._users.splice(i, 1)
+                i-- 
+            }
         }
     }
 
@@ -169,31 +185,11 @@ class Game {
         if(this._allowCollision) {
             this.collisionCheck(deltaTme)
         }
-
-        // for (let i = 0; i < this._users.length; i++) {
-        //     const user = this._users[i];
-        //     user.update(deltaTme)
-        //     if (!this._clearArea.isInside(user)) {
-        //         user.damage(deltaTme)
-        //     }
-        //     if (user instanceof Player) {
-        //         if (user.needsToFire()) {
-        //             let bulletModel = user.createBullet()
-        //             if (bulletModel) {
-        //                 this.addBullet(bulletModel)
-        //             }
-        //         }
-        //     }
-        // }
-
-        
-
     }
 
     serialize() {
 
         let status = this.getStatus()
-
         let data = {
             f: { r: this._clearArea.getRadius(), x: this._clearArea.x, y: this._clearArea.y },
             p: this._users.map(player => player.serialize()),
@@ -203,6 +199,7 @@ class Game {
 
         if(status === STATUS.WAITING_PLAYERS) {
             data.s = STATUS.WAITING_PLAYERS
+            data.t =  Date.now() - this._statusTimer
         }
         return data
     }

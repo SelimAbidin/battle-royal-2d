@@ -63,13 +63,11 @@ Game.prototype.start = function () {
 
     socket.on('UPDATE', (data) => {
 
-        
         if(data.s === 0) {
-            this._text = "WAITING FOR PLAYERS"
+            this._text = "WAITING FOR PLAYERS ("+ (30 - Math.round(data.t / 1000))+")"
         } else {
             this._text = undefined
         }
-
 
         var positions = data.p
         var bullets = data.b
