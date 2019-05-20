@@ -3,7 +3,6 @@ import { Hero } from './display/Hero'
 import { Enemy } from './display/Enemy'
 import { Bullet } from './display/Bullet'
 import { socket } from './socket'
-import { PLAYER } from '../types'
 import { Camera } from './display/Camera';
 import { Fog } from './display/Fog';
 import { SIZE, CENTER } from '../common/map';
@@ -35,8 +34,6 @@ function Game(gameCanvas, userName) {
 Game.prototype.init = function () {
     this._hero = new Hero(this._name)
     this._map = new GameMap()
-
-
     this._fog = new Fog(CENTER, Math.max(SIZE.x, SIZE.y))
 }
 
@@ -65,6 +62,14 @@ Game.prototype.start = function () {
     }
 
     socket.on('UPDATE', (data) => {
+
+        
+        if(data.s === 0) {
+            this._text = "WAITING FOR PLAYERS"
+        } else {
+            this._text = undefined
+        }
+
 
         var positions = data.p
         var bullets = data.b
@@ -167,11 +172,17 @@ Game.prototype.update = function () {
     ctx.textAlign = "left";
     ctx.fillText('Life :' + Math.ceil(this._hero.getLife()), 10, 30);
 
-    deltaTimeTemp = Date.now()
-    requestAnimationFrame(this.update)
-    return
 
-    setTimeout(this.update, 1000)
+    if(this._text !== undefined) {
+        ctx.font = "bold 35px Arial";
+        ctx.fillStyle = "#00FF00";
+        ctx.textAlign = "center";
+        ctx.fillText(this._text, 350, 350);
+    }
+
+    deltaTimeTemp = Date.now()
+
+    requestAnimationFrame(this.update)
 }
 
 export { Game }

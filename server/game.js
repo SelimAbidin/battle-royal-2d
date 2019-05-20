@@ -48,6 +48,9 @@ class Bullet {
     }
 }
 
+const STATUS = {
+    WAITING_PLAYERS: 0
+}
 
 class Game {
 
@@ -57,6 +60,24 @@ class Game {
         this._explotions = []
         this._clearArea = new ClearArea(2000)
         this._isOver = false
+        
+        this.setStatus(STATUS.WAITING_PLAYERS)
+    }
+
+    setStatus(status) {
+        
+        if(this._gameStatus !== status) {
+            this._gameStatus = status
+            if(status === STATUS.WAITING_PLAYERS) {
+                this._allowCollision = false
+            }
+
+        }
+
+    }
+
+    getStatus() {
+        return this._gameStatus
     }
 
     addUser(player) {
@@ -76,11 +97,9 @@ class Game {
         return this._isOver
     }
 
-    update(deltaTme) {
+    updateBullets(deltaTme) {
 
         this._explotions.length = 0
-        this._clearArea.update(deltaTme)
-
         for (let i = 0; i < this._bullets.length; i++) {
             const bullet = this._bullets[i];
             if (bullet.isDead()) {
@@ -91,16 +110,12 @@ class Game {
             }
             bullet.update(deltaTme)
         }
+    }
 
-
+    updateUsers(deltaTme) {
         for (let i = 0; i < this._users.length; i++) {
             const user = this._users[i];
             user.update(deltaTme)
-
-            if (!this._clearArea.isInside(user)) {
-                user.damage(deltaTme)
-            }
-
             if (user instanceof Player) {
                 if (user.needsToFire()) {
                     let bulletModel = user.createBullet()
@@ -110,16 +125,23 @@ class Game {
                 }
             }
         }
+    }
+
+    collisionCheck(deltaTme) {
+        for (let i = 0; i < this._users.length; i++) {
+            const user = this._users[i];
+            if (!this._clearArea.isInside(user)) {
+                user.damage(deltaTme)
+            }
+        }
 
         for (let i = 0; i < this._users.length; i++) {
-            
             let user = this._users[i]
             for (let j = 0; j < this._explotions.length; j++) {
                 const explotion = this._explotions[j];
                 let dx = explotion.getTargetX() - user.getX()
                 let dy = explotion.getTargetY() - user.getY()
                 let dist = Math.sqrt(dx * dx + dy * dy)
-
                 if(dist < 40) {
                     let damage = (1 - (dist / 40)) * 100
                     user.damage(damage)
@@ -127,19 +149,62 @@ class Game {
                     
                 }
             }
-
-            
         }
+    }
+
+
+    updateWaitingPlayer(deltaTme) {
+        this.updateBullets(deltaTme)
+        this.updateUsers(deltaTme)
+
+    }
+
+    update(deltaTme) {
+
+        this._clearArea.update(deltaTme)
+
+        this.updateBullets(deltaTme)
+        this.updateUsers(deltaTme)
+
+        if(this._allowCollision) {
+            this.collisionCheck(deltaTme)
+        }
+
+        // for (let i = 0; i < this._users.length; i++) {
+        //     const user = this._users[i];
+        //     user.update(deltaTme)
+        //     if (!this._clearArea.isInside(user)) {
+        //         user.damage(deltaTme)
+        //     }
+        //     if (user instanceof Player) {
+        //         if (user.needsToFire()) {
+        //             let bulletModel = user.createBullet()
+        //             if (bulletModel) {
+        //                 this.addBullet(bulletModel)
+        //             }
+        //         }
+        //     }
+        // }
+
+        
 
     }
 
     serialize() {
-        return {
+
+        let status = this.getStatus()
+
+        let data = {
             f: { r: this._clearArea.getRadius(), x: this._clearArea.x, y: this._clearArea.y },
             p: this._users.map(player => player.serialize()),
             b: this._bullets.map(bullet => bullet.serialize()),
             e: this._explotions.map(explotion => ({x: explotion.getTargetX(),y: explotion.getTargetY() }))
         }
+
+        if(status === STATUS.WAITING_PLAYERS) {
+            data.s = STATUS.WAITING_PLAYERS
+        }
+        return data
     }
 
 }

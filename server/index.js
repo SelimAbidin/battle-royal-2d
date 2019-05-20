@@ -8,8 +8,8 @@ const { Game } = require('./game')
 const { Player } = require('./player')
 
 
-let game = new Game()
-
+// let game = new Game()
+let game 
 app.engine('.ejs', ejs.__express);
 app.get('/users.html', (req, res) => {
     res.render(join(__dirname, 'views/users.ejs'), {
@@ -30,6 +30,11 @@ function createUser(name, userID, socket, type) {
 
 io.on('connection', function (socket) {
     socket.on('ADD_NAME', (name) => {
+
+        if(!game) {
+            game = new Game()
+        }
+
         createUser(name, socket.id, socket, 0)
     })
 });
@@ -39,19 +44,23 @@ io.on('connection', function (socket) {
 let deltaTime = Date.now()
 setInterval(() => {
 
-    game.update((Date.now() - deltaTime) / 1000)
+    if(game) {
 
-    if (game.isOver()) {
-        let gameEndData = game.serialize()
-        gameEndData.state = 'GAME_OVER'
-        io.emit('UPDATE', gameEndData)
-        return
+        game.update((Date.now() - deltaTime) / 1000)
+        if (game.isOver()) {
+            let gameEndData = game.serialize()
+            gameEndData.state = 'GAME_OVER'
+            io.emit('UPDATE', gameEndData)
+            return
+        }
+
+        deltaTime = Date.now()
+        io.emit('UPDATE', game.serialize())
     }
 
-    deltaTime = Date.now()
-    io.emit('UPDATE', game.serialize())
-
-}, 1000 / 90)
+    
+    
+}, 1000 / 60)
 
 http.listen(3000, () => {
     console.log('Server Started')
