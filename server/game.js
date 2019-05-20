@@ -26,6 +26,14 @@ class Bullet {
 
     }
 
+    getTargetX() {
+        return this._targetX
+    }
+
+    getTargetY() {
+        return this._targetY
+    }
+
     serialize() {
 
         // TODO with ID matching could be much usefull. Client could cache it.
@@ -70,12 +78,13 @@ class Game {
 
     update(deltaTme) {
 
+        let explotions = []
         this._clearArea.update(deltaTme)
 
         for (let i = 0; i < this._bullets.length; i++) {
             const bullet = this._bullets[i];
-
             if (bullet.isDead()) {
+                explotions.push(bullet)
                 this._bullets.splice(i, 1)
                 i--
                 continue
@@ -101,6 +110,27 @@ class Game {
                 }
             }
         }
+
+        for (let i = 0; i < this._users.length; i++) {
+            
+            let user = this._users[i]
+            for (let j = 0; j < explotions.length; j++) {
+                const explotion = explotions[j];
+                let dx = explotion.getTargetX() - user.getX()
+                let dy = explotion.getTargetY() - user.getY()
+                let dist = Math.sqrt(dx * dx + dy * dy)
+
+                if(dist < 40) {
+                    let damage = (1 - (dist / 40)) * 100
+                    user.damage(damage)
+                } else {
+                    
+                }
+            }
+
+            
+        }
+
     }
 
     serialize() {

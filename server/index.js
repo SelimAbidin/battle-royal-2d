@@ -6,8 +6,6 @@ const io = require('socket.io')(http)
 const { join } = require('path')
 const { Game } = require('./game')
 const { Player } = require('./player')
-let userMap = {}
-
 
 
 let game = new Game()

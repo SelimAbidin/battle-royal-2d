@@ -30,6 +30,14 @@ class Player {
         return this._socket
     }
 
+    getX() {
+        return this._x
+    }
+
+    getY() {
+        return this._y
+    }
+
     _messageReceive(message) {
 
         this._xRoute = message.x
