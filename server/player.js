@@ -39,7 +39,6 @@ class Player {
     }
 
     _messageReceive(message) {
-
         this._xRoute = message.x
         this._yRoute = message.y
         this._isMouseDown = message.md

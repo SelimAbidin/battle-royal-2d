@@ -54,7 +54,7 @@ class Game {
     constructor() {
         this._users = []
         this._bullets = []
-
+        this._explotions = []
         this._clearArea = new ClearArea(2000)
         this._isOver = false
     }
@@ -78,13 +78,13 @@ class Game {
 
     update(deltaTme) {
 
-        let explotions = []
+        this._explotions.length = 0
         this._clearArea.update(deltaTme)
 
         for (let i = 0; i < this._bullets.length; i++) {
             const bullet = this._bullets[i];
             if (bullet.isDead()) {
-                explotions.push(bullet)
+                this._explotions.push(bullet)
                 this._bullets.splice(i, 1)
                 i--
                 continue
@@ -114,8 +114,8 @@ class Game {
         for (let i = 0; i < this._users.length; i++) {
             
             let user = this._users[i]
-            for (let j = 0; j < explotions.length; j++) {
-                const explotion = explotions[j];
+            for (let j = 0; j < this._explotions.length; j++) {
+                const explotion = this._explotions[j];
                 let dx = explotion.getTargetX() - user.getX()
                 let dy = explotion.getTargetY() - user.getY()
                 let dist = Math.sqrt(dx * dx + dy * dy)
@@ -138,6 +138,7 @@ class Game {
             f: { r: this._clearArea.getRadius(), x: this._clearArea.x, y: this._clearArea.y },
             p: this._users.map(player => player.serialize()),
             b: this._bullets.map(bullet => bullet.serialize()),
+            e: this._explotions.map(explotion => ({x: explotion.getTargetX(),y: explotion.getTargetY() }))
         }
     }
 
