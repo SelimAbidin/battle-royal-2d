@@ -136,11 +136,14 @@ class Game {
             }
 
             // I know I check this before collision
+            // And I know when they die in same time, second will be alive
             if(user.isDead()) {
                 this._users.splice(i, 1)
                 i-- 
             }
         }
+
+
     }
 
     collisionCheck(deltaTme) {
@@ -169,11 +172,11 @@ class Game {
     }
 
 
-    updateWaitingPlayer(deltaTme) {
-        this.updateBullets(deltaTme)
-        this.updateUsers(deltaTme)
+    // updateWaitingPlayer(deltaTme) {
+    //     this.updateBullets(deltaTme)
+    //     this.updateUsers(deltaTme)
 
-    }
+    // }
 
     update(deltaTme) {
 
@@ -185,6 +188,15 @@ class Game {
         if(this._allowCollision) {
             this.collisionCheck(deltaTme)
         }
+
+        if(this.getStatus() === STATUS.PLAYING) {
+            if(this._users.length === 1) {
+                console.log('Winner' , this._users.name);
+            } else {
+                console.log('None works');
+            }
+        }
+
     }
 
     serialize() {
