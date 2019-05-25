@@ -7,6 +7,7 @@ import { Camera } from './display/Camera';
 import { Fog } from './display/Fog';
 import { SIZE, CENTER } from '../common/map';
 import { DropArea } from './display/DropArea';
+import { Explosion } from './display/Explosion';
 
 var requestObject = {
     x: 0,
@@ -24,6 +25,7 @@ function Game(gameCanvas, userName) {
     this._bullets = []
     this._drops = []
     this._explosions = []
+    this._explosionPoints = []
     this._ctx = gameCanvas.getContext('2d')
     this._camera = new Camera()
     this._mouseDown = false
@@ -77,8 +79,6 @@ Game.prototype.start = function () {
         this._enemies.length = 0
         this._bullets.length = 0
         this._drops.length = 0
-        this._explosions.length = 0
-
 
         for (var i = 0; i < positions.length; i++) {
             var position = positions[i];
@@ -102,7 +102,15 @@ Game.prototype.start = function () {
         }
 
 
-        this._explosions = explosions
+        for (let index = 0; index < explosions.length; index++) {
+            const model = explosions[index];
+            let explosion = new Explosion()
+            explosion.setPosition(model.x, model.y)
+            this._explosions.push(explosion)
+            this._explosionPoints.push(model)
+        }
+
+
 
         this._fog.setPosition(fog.x, fog.y)
         this._fog.setRadius(fog.r)
@@ -139,15 +147,17 @@ Game.prototype.update = function () {
 
     this._camera.setPosition(cameraX, cameraY)
     this._camera.begin(ctx)
-    for (let i = 0; i < this._explosions.length; i++) {
-        const explosion = this._explosions[i];
-        this._camera.shakeByDistance(explosion.x - 350, explosion.y - 350)
+
+    while (this._explosionPoints.length > 0) {
+        let explotion = this._explosionPoints.shift()
+        this._camera.shakeByDistance(explotion.x - 350, explotion.y - 350)
     }
 
+
+
+
+
     this._camera.update(this._frame)
-
-    //this._explosions
-
     this._map.draw(ctx)
 
     requestObject.x = this._hero.getMoveX()
@@ -172,6 +182,18 @@ Game.prototype.update = function () {
     for (let i = 0; i < this._bullets.length; i++) {
         var bullet = this._bullets[i];
         bullet.draw(ctx)
+    }
+
+
+    for (let i = 0; i < this._explosions.length; i++) {
+        const explosion = this._explosions[i];
+        explosion.update(this._frame)
+        explosion.draw(ctx)
+
+        if (explosion.isDead()) {
+            this._explosions.splice(i, 1)
+            i--
+        }
     }
 
     this._fog.draw(ctx)

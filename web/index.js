@@ -25,6 +25,7 @@ AssetsManager.addImage("enemy", '/images/enemy.png')
 AssetsManager.addImage("bullet", '/images/bullet.png')
 AssetsManager.addImage("target", '/images/target.png')
 AssetsManager.addImage("smoke", '/images/smoke.png')
+AssetsManager.addImage("explosion", '/images/explosion.png')
 
 AssetsManager.onReady(function () {
 

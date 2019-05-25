@@ -4,7 +4,7 @@ const { ClearArea } = require('./clearArea')
 const { CENTER } = require('../common/map')
 
 
-const PLAYER_WAITING_TIME = 50
+const PLAYER_WAITING_TIME = 1
 
 class Bullet {
     constructor(x, y, targetX, targetY) {
@@ -164,8 +164,8 @@ class Game {
                 let dx = explotion.getTargetX() - user.getX()
                 let dy = explotion.getTargetY() - user.getY()
                 let dist = Math.sqrt(dx * dx + dy * dy)
-                if (dist < 40) {
-                    let damage = (1 - (dist / 40)) * 100
+                if (dist < 55) {
+                    let damage = (1 - (dist / 55)) * 100
                     user.damage(damage)
                 } else {
 
@@ -187,7 +187,7 @@ class Game {
 
         if (this.getStatus() === STATUS.PLAYING) {
             if (this._users.length === 1) {
-                console.log('Winner', this._users[0].name);
+                // console.log('Winner', this._users[0].name);
             } else {
 
             }
