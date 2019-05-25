@@ -26,6 +26,10 @@ class Player {
         socket.on('USER', this._messageReceive)
     }
 
+    get name() {
+        return this._name
+    }
+
     get socket() {
         return this._socket
     }
@@ -95,7 +99,7 @@ class Player {
     }
 
     isDead() {
-        return  this._life  <= 0
+        return this._life <= 0
     }
 
     destroy() {
@@ -104,7 +108,7 @@ class Player {
 
     damage(v) {
         this._life -= v
-        if(this._life < 0) {
+        if (this._life < 0) {
             this._life = 0
         }
     }

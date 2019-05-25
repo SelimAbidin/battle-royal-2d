@@ -3,6 +3,9 @@ const { Player } = require('./player')
 const { ClearArea } = require('./clearArea')
 const { CENTER } = require('../common/map')
 
+
+const PLAYER_WAITING_TIME = 50
+
 class Bullet {
     constructor(x, y, targetX, targetY) {
         this._x = x
@@ -61,27 +64,27 @@ class Game {
         this._explotions = []
         this._clearArea = new ClearArea(2000)
         this._isOver = false
-        
+
         this._statusTimer = 0
         this.setStatus(STATUS.WAITING_PLAYERS)
     }
 
     setStatus(status) {
-        
-        if(this._gameStatus !== status) {
+
+        if (this._gameStatus !== status) {
             this._gameStatus = status
-            if(status === STATUS.WAITING_PLAYERS) {
+            if (status === STATUS.WAITING_PLAYERS) {
                 this._allowCollision = false
                 this._statusTimer = Date.now()
-                setTimeout( e => this.setStatus(STATUS.PLAYING), 30 * 1000 )
+                setTimeout(e => this.setStatus(STATUS.PLAYING), PLAYER_WAITING_TIME * 1000)
             } else if (status === STATUS.PLAYING) {
                 this._users.forEach(user => {
                     let x = (Math.random() * 500) + 500
                     let y = Math.random() * 500 + 500
-                    user.setPosition(x,y)
+                    user.setPosition(x, y)
                 })
                 this._allowCollision = true
-            } 
+            }
         }
 
     }
@@ -137,9 +140,9 @@ class Game {
 
             // I know I check this before collision
             // And I know when they die in same time, second will be alive
-            if(user.isDead()) {
+            if (user.isDead()) {
                 this._users.splice(i, 1)
-                i-- 
+                i--
             }
         }
 
@@ -161,22 +164,15 @@ class Game {
                 let dx = explotion.getTargetX() - user.getX()
                 let dy = explotion.getTargetY() - user.getY()
                 let dist = Math.sqrt(dx * dx + dy * dy)
-                if(dist < 40) {
+                if (dist < 40) {
                     let damage = (1 - (dist / 40)) * 100
                     user.damage(damage)
                 } else {
-                    
+
                 }
             }
         }
     }
-
-
-    // updateWaitingPlayer(deltaTme) {
-    //     this.updateBullets(deltaTme)
-    //     this.updateUsers(deltaTme)
-
-    // }
 
     update(deltaTme) {
 
@@ -185,15 +181,15 @@ class Game {
         this.updateBullets(deltaTme)
         this.updateUsers(deltaTme)
 
-        if(this._allowCollision) {
+        if (this._allowCollision) {
             this.collisionCheck(deltaTme)
         }
 
-        if(this.getStatus() === STATUS.PLAYING) {
-            if(this._users.length === 1) {
-                console.log('Winner' , this._users.name);
+        if (this.getStatus() === STATUS.PLAYING) {
+            if (this._users.length === 1) {
+                console.log('Winner', this._users[0].name);
             } else {
-                console.log('None works');
+
             }
         }
 
@@ -206,12 +202,12 @@ class Game {
             f: { r: this._clearArea.getRadius(), x: this._clearArea.x, y: this._clearArea.y },
             p: this._users.map(player => player.serialize()),
             b: this._bullets.map(bullet => bullet.serialize()),
-            e: this._explotions.map(explotion => ({x: explotion.getTargetX(),y: explotion.getTargetY() }))
+            e: this._explotions.map(explotion => ({ x: explotion.getTargetX(), y: explotion.getTargetY() }))
         }
 
-        if(status === STATUS.WAITING_PLAYERS) {
+        if (status === STATUS.WAITING_PLAYERS) {
             data.s = STATUS.WAITING_PLAYERS
-            data.t =  Date.now() - this._statusTimer
+            data.t = Date.now() - this._statusTimer
         }
         return data
     }

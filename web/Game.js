@@ -23,6 +23,7 @@ function Game(gameCanvas, userName) {
     this._enemies = []
     this._bullets = []
     this._drops = []
+    this._explosions = []
     this._ctx = gameCanvas.getContext('2d')
     this._camera = new Camera()
     this._mouseDown = false
@@ -63,18 +64,21 @@ Game.prototype.start = function () {
 
     socket.on('UPDATE', (data) => {
 
-        if(data.s === 0) {
-            this._text = "WAITING FOR PLAYERS ("+ (30 - Math.round(data.t / 1000))+")"
+        if (data.s === 0) {
+            this._text = "WAITING FOR PLAYERS (" + (30 - Math.round(data.t / 1000)) + ")"
         } else {
             this._text = undefined
         }
 
         var positions = data.p
         var bullets = data.b
+        var explosions = data.e
         var fog = data.f
         this._enemies.length = 0
         this._bullets.length = 0
         this._drops.length = 0
+        this._explosions.length = 0
+
 
         for (var i = 0; i < positions.length; i++) {
             var position = positions[i];
@@ -98,13 +102,13 @@ Game.prototype.start = function () {
         }
 
 
+        this._explosions = explosions
 
         this._fog.setPosition(fog.x, fog.y)
         this._fog.setRadius(fog.r)
     })
 
     deltaTimeTemp = Date.now() - 16
-
     this.update()
 }
 
@@ -135,6 +139,14 @@ Game.prototype.update = function () {
 
     this._camera.setPosition(cameraX, cameraY)
     this._camera.begin(ctx)
+    for (let i = 0; i < this._explosions.length; i++) {
+        const explosion = this._explosions[i];
+        this._camera.shakeByDistance(explosion.x - 350, explosion.y - 350)
+    }
+
+    this._camera.update(this._frame)
+
+    //this._explosions
 
     this._map.draw(ctx)
 
@@ -171,7 +183,7 @@ Game.prototype.update = function () {
     ctx.fillText('Life :' + Math.ceil(this._hero.getLife()), 10, 30);
 
 
-    if(this._text !== undefined) {
+    if (this._text !== undefined) {
         ctx.font = "bold 35px Arial";
         ctx.fillStyle = "#00FF00";
         ctx.textAlign = "center";
