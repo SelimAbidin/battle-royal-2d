@@ -32,9 +32,9 @@ AssetsManager.addImage("explosion", '/images/explosion.png')
 var names = ['Adam', 'Martin', 'Irina', 'Selim', 'Saksağan']
 AssetsManager.onReady(function () {
 
-    // window.prompt("Your nick will be here", "");
+    var userName = window.prompt("Your nick will be here", "");
 
-    var userName = 'Adam' + Date.now()
+    if (userName.trim().length < 1) userName = 'Adam' + Date.now()
     // var userName = names.pop()
 
     socket.once('START_MESSAGE', function (message) {
