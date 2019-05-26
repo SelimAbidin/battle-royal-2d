@@ -9,7 +9,20 @@ const { Player } = require('./player')
 
 
 // let game = new Game()
-let game 
+let game
+
+
+let allUsers = []
+function addToAllUSers(user) {
+    allUsers.push(user)
+
+    user.socket.on('disconnect', () => {
+        allUsers.splice(allUsers.indexOf(user), 1)
+    })
+
+
+}
+
 app.engine('.ejs', ejs.__express);
 app.get('/users.html', (req, res) => {
     res.render(join(__dirname, 'views/users.ejs'), {
@@ -21,21 +34,46 @@ app.get('/users.html', (req, res) => {
 })
 
 
-function createUser(name, userID, socket, type) {
+function createUser(name, userID, socket) {
     let player = new Player(userID, name, socket)
     player.setPosition(600, 600)
-    game.addUser(player)
+    return player
 }
 
 
 io.on('connection', function (socket) {
     socket.on('ADD_NAME', (name) => {
 
-        if(!game) {
+        if (!game) {
             game = new Game()
         }
 
-        createUser(name, socket.id, socket, 0)
+
+        let player = createUser(name, socket.id, socket)
+        addToAllUSers(player)
+
+        if (game.isWaitingForPlayer()) {
+            game.addUser(player)
+            socket.emit('START_MESSAGE', {
+                s: 1,
+                message: "Game already started"
+            })
+        } else {
+            socket.emit('START_MESSAGE', {
+                s: 0,
+                message: "Game already started"
+            })
+        }
+
+
+        // if (game.isWaitingForPlayer()) {
+        // } else {
+        //     socket.emit('MESSAGE', {
+        //         s: 0,
+        //         message: "Game already started"
+        //     })
+        // }
+
     })
 });
 
@@ -44,22 +82,27 @@ io.on('connection', function (socket) {
 let deltaTime = Date.now()
 setInterval(() => {
 
-    if(game) {
+    if (game) {
 
         game.update((Date.now() - deltaTime) / 1000)
-        if (game.isOver()) {
-            let gameEndData = game.serialize()
-            gameEndData.state = 'GAME_OVER'
-            io.emit('UPDATE', gameEndData)
-            return
+
+        if (!game.isOver()) {
+            io.emit('UPDATE', game.serialize())
+        } else {
+
+            io.emit('MESSAGE', {
+                s: 3,
+                t: 'Champion is ' + game.getWinner()
+            })
+
+            game = null
         }
 
         deltaTime = Date.now()
-        io.emit('UPDATE', game.serialize())
     }
 
-    
-    
+
+
 }, 1000 / 60)
 
 http.listen(3000, () => {

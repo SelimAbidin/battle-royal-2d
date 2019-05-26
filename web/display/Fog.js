@@ -34,8 +34,8 @@ class Fog extends Object2D {
         }
 
         ctx.fillStyle = this._pattern
-        let x = this._x
-        let y = this._y
+        var x = this._x
+        var y = this._y
         ctx.arc(x, y, this._maxRadius, 0, Math.PI * 2)
         ctx.arc(x, y, this._radius, 0, Math.PI * 2, true)
         ctx.fill()

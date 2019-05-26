@@ -5,7 +5,7 @@ const { CENTER } = require('../common/map')
 const { inWalkable } = require('./map-collision')
 
 
-const PLAYER_WAITING_TIME = 1
+const PLAYER_WAITING_TIME = 5
 
 class Bullet {
     constructor(x, y, targetX, targetY) {
@@ -63,9 +63,12 @@ class Game {
         this._explotions = []
         this._clearArea = new ClearArea(5000)
         this._isOver = false
-
         this._statusTimer = 0
         this.setStatus(STATUS.WAITING_PLAYERS)
+    }
+
+    isWaitingForPlayer() {
+        return this._gameStatus === STATUS.WAITING_PLAYERS
     }
 
     setStatus(status) {
@@ -94,8 +97,6 @@ class Game {
                         }
                     }
 
-
-
                 })
                 this._allowCollision = true
             }
@@ -121,7 +122,12 @@ class Game {
     }
 
     isOver() {
-        return this._isOver
+        let status = this._gameStatus
+        return this._users.length < 2 && status === STATUS.PLAYING
+    }
+
+    getWinner() {
+        return this._winner
     }
 
     updateBullets(deltaTme) {
@@ -201,12 +207,11 @@ class Game {
 
         if (this.getStatus() === STATUS.PLAYING) {
             if (this._users.length === 1) {
-                // console.log('Winner', this._users[0].name);
+                this._winner = this._users[0].name
             } else {
 
             }
         }
-
     }
 
     serialize() {

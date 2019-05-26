@@ -25,7 +25,6 @@ class ClearArea {
     _onTimerToShirink() {
         this._nextArea -= 1000
         this._interval = null
-        console.log('Shirink', this._nextArea);
     }
 
     getRadius() {

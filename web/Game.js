@@ -29,12 +29,26 @@ function Game(gameCanvas, userName) {
     this._ctx = gameCanvas.getContext('2d')
     this._camera = new Camera()
     this._mouseDown = false
-    gameCanvas.addEventListener('mousedown', this.onMouseDown)
-    document.addEventListener('mouseup', this.onMouseUp)
-    document.addEventListener('mousemove', this.onMouseMove)
+
+    socket.on('MESSAGE', (e) => {
+
+        if (e.s === 3) {
+            this._text = e.t
+        }
+
+    })
 }
 
 Game.prototype.init = function () {
+    this._gameCanvas.addEventListener('mousedown', this.onMouseDown)
+    document.addEventListener('mouseup', this.onMouseUp)
+    document.addEventListener('mousemove', this.onMouseMove)
+
+    this._frame = {
+        deltaTime: 0,
+        context: this._ctx
+    }
+
     this._hero = new Hero(this._name)
     this._map = new GameMap()
     this._fog = new Fog(CENTER, Math.max(SIZE.x, SIZE.y) * 2)
@@ -56,13 +70,8 @@ Game.prototype.onMouseUp = function () {
     this._hero.releaseAmmo()
 }
 
-let deltaTimeTemp
+var deltaTimeTemp
 Game.prototype.start = function () {
-
-    this._frame = {
-        deltaTime: 0,
-        context: this._ctx
-    }
 
     socket.on('UPDATE', (data) => {
 
@@ -80,11 +89,14 @@ Game.prototype.start = function () {
         this._bullets.length = 0
         this._drops.length = 0
 
+
+
         for (var i = 0; i < positions.length; i++) {
             var position = positions[i];
             if (position.name === this._name) {
                 this._hero.setPosition(position.x, position.y)
                 this._hero.setLife(position.life)
+                this._camera.followObject(this._hero)
             } else {
                 var enemy = new Enemy(position.name)
                 enemy.setPosition(position.x, position.y)
@@ -92,25 +104,30 @@ Game.prototype.start = function () {
             }
         }
 
-        for (let i = 0; i < bullets.length; i++) {
+        if (this.isObserver) {
+            this._camera.followObject(this._enemies[0])
+        } else {
+
+        }
+
+
+        for (var i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];
-            let b = new Bullet(bullet)
-            let drop = new DropArea()
+            var b = new Bullet(bullet)
+            var drop = new DropArea()
             drop.setPosition(bullet.tx, bullet.ty)
             this._bullets.push(b)
             this._drops.push(drop)
         }
 
 
-        for (let index = 0; index < explosions.length; index++) {
+        for (var index = 0; index < explosions.length; index++) {
             const model = explosions[index];
-            let explosion = new Explosion()
+            var explosion = new Explosion()
             explosion.setPosition(model.x, model.y)
             this._explosions.push(explosion)
             this._explosionPoints.push(model)
         }
-
-
 
         this._fog.setPosition(fog.x, fog.y)
         this._fog.setRadius(fog.r)
@@ -120,84 +137,8 @@ Game.prototype.start = function () {
     this.update()
 }
 
-Game.prototype.update = function () {
 
-    this._frame.deltaTime = Date.now() - deltaTimeTemp
-
-    var ctx = this._ctx
-    ctx.clearRect(0, 0, 700, 700)
-
-    let cameraX
-    let cameraY
-    if (this._hero.getX() < 350) {
-        cameraX = 0
-    } else if (this._hero.getX() > 4650) {
-        cameraX = 4650 - 350
-    } else {
-        cameraX = this._hero.getX() - 350
-    }
-
-    if (this._hero.getY() < 350) {
-        cameraY = 0
-    } else if (this._hero.getY() > 4650) {
-        cameraY = 4650 - 350
-    } else {
-        cameraY = this._hero.getY() - 350
-    }
-
-    this._camera.setPosition(cameraX, cameraY)
-    this._camera.begin(ctx)
-
-    while (this._explosionPoints.length > 0) {
-        let explotion = this._explosionPoints.shift()
-        this._camera.shakeByDistance(explotion.x - 350, explotion.y - 350)
-    }
-
-
-
-
-
-    this._camera.update(this._frame)
-    this._map.draw(ctx)
-
-    requestObject.x = this._hero.getMoveX()
-    requestObject.y = this._hero.getMoveY()
-    requestObject.md = this._mouseDown
-    requestObject.mp = this._mousePosition
-
-    socket.emit('USER', requestObject)
-
-    for (let i = 0; i < this._drops.length; i++) {
-        var drop = this._drops[i];
-        drop.draw(ctx)
-    }
-
-    for (let i = 0; i < this._enemies.length; i++) {
-        var enemy = this._enemies[i];
-        enemy.draw(ctx)
-    }
-
-    this._hero.draw(ctx)
-
-    for (let i = 0; i < this._bullets.length; i++) {
-        var bullet = this._bullets[i];
-        bullet.draw(ctx)
-    }
-
-
-    for (let i = 0; i < this._explosions.length; i++) {
-        const explosion = this._explosions[i];
-        explosion.update(this._frame)
-        explosion.draw(ctx)
-
-        if (explosion.isDead()) {
-            this._explosions.splice(i, 1)
-            i--
-        }
-    }
-
-    this._fog.draw(ctx)
-    this._camera.end(ctx)
+Game.prototype.renderGUI = function (ctx) {
 
     ctx.font = "bold 25px Arial";
     ctx.fillStyle = "#00FF00";
@@ -210,6 +151,67 @@ Game.prototype.update = function () {
         ctx.fillStyle = "#00FF00";
         ctx.textAlign = "center";
         ctx.fillText(this._text, 350, 350);
+    }
+}
+
+
+Game.prototype.update = function () {
+
+    this._frame.deltaTime = Date.now() - deltaTimeTemp
+
+    var ctx = this._ctx
+    ctx.clearRect(0, 0, 700, 700)
+
+
+    this._camera.begin(ctx)
+
+    while (this._explosionPoints.length > 0) {
+        var explotion = this._explosionPoints.shift()
+        this._camera.shakeByDistance(explotion.x - 350, explotion.y - 350)
+    }
+
+    this._camera.update(this._frame)
+    this._map.draw(ctx)
+
+    for (var i = 0; i < this._drops.length; i++) {
+        var drop = this._drops[i];
+        drop.draw(ctx)
+    }
+
+    for (var i = 0; i < this._enemies.length; i++) {
+        var enemy = this._enemies[i];
+        enemy.draw(ctx)
+    }
+
+    this._hero.draw(ctx)
+
+    for (var i = 0; i < this._bullets.length; i++) {
+        var bullet = this._bullets[i];
+        bullet.draw(ctx)
+    }
+
+
+    for (var i = 0; i < this._explosions.length; i++) {
+        const explosion = this._explosions[i];
+        explosion.update(this._frame)
+        explosion.draw(ctx)
+        if (explosion.isDead()) {
+            this._explosions.splice(i, 1)
+            i--
+        }
+    }
+
+    this._fog.draw(ctx)
+    this._camera.end(ctx)
+
+    this.renderGUI(ctx)
+
+    if (this._hero instanceof Hero) {
+        requestObject.x = this._hero.getMoveX()
+        requestObject.y = this._hero.getMoveY()
+        requestObject.md = this._mouseDown
+        requestObject.mp = this._mousePosition
+        socket.emit('USER', requestObject)
     }
 
     deltaTimeTemp = Date.now()
