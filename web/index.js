@@ -33,8 +33,8 @@ AssetsManager.onReady(function () {
 
     // window.prompt("Your nick will be here", "");
 
-    // let userName = 'Adam' + Date.now()
-    let userName = names.shift()
+    let userName = 'Adam' + Date.now()
+    // let userName = names.pop()
 
     socket.on('MESSAGE', function (message) {
 

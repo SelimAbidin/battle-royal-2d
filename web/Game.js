@@ -82,18 +82,20 @@ Game.prototype.start = function () {
         this._bullets.length = 0
         this._drops.length = 0
 
+
+
         for (var i = 0; i < positions.length; i++) {
             var position = positions[i];
             if (position.name === this._name) {
                 this._hero.setPosition(position.x, position.y)
                 this._hero.setLife(position.life)
+                this._camera.followObject(this._hero)
             } else {
                 var enemy = new Enemy(position.name)
                 enemy.setPosition(position.x, position.y)
                 this._enemies.push(enemy)
             }
         }
-
 
         if (this.isObserver) {
             this._camera.followObject(this._enemies[0])

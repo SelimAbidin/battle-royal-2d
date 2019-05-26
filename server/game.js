@@ -5,7 +5,7 @@ const { CENTER } = require('../common/map')
 const { inWalkable } = require('./map-collision')
 
 
-const PLAYER_WAITING_TIME = 300
+const PLAYER_WAITING_TIME = 5
 
 class Bullet {
     constructor(x, y, targetX, targetY) {
@@ -97,8 +97,6 @@ class Game {
                             break
                         }
                     }
-
-
 
                 })
                 this._allowCollision = true

@@ -66,13 +66,7 @@ io.on('connection', function (socket) {
         }
 
 
-
-
-
-
         // if (game.isWaitingForPlayer()) {
-
-
         // } else {
         //     socket.emit('MESSAGE', {
         //         s: 0,
