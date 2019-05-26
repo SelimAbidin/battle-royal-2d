@@ -29,12 +29,19 @@ function Game(gameCanvas, userName) {
     this._ctx = gameCanvas.getContext('2d')
     this._camera = new Camera()
     this._mouseDown = false
-    gameCanvas.addEventListener('mousedown', this.onMouseDown)
-    document.addEventListener('mouseup', this.onMouseUp)
-    document.addEventListener('mousemove', this.onMouseMove)
+
 }
 
 Game.prototype.init = function () {
+    this._gameCanvas.addEventListener('mousedown', this.onMouseDown)
+    document.addEventListener('mouseup', this.onMouseUp)
+    document.addEventListener('mousemove', this.onMouseMove)
+
+    this._frame = {
+        deltaTime: 0,
+        context: this._ctx
+    }
+
     this._hero = new Hero(this._name)
     this._map = new GameMap()
     this._fog = new Fog(CENTER, Math.max(SIZE.x, SIZE.y) * 2)
@@ -58,11 +65,6 @@ Game.prototype.onMouseUp = function () {
 
 let deltaTimeTemp
 Game.prototype.start = function () {
-
-    this._frame = {
-        deltaTime: 0,
-        context: this._ctx
-    }
 
     socket.on('UPDATE', (data) => {
 
@@ -92,6 +94,14 @@ Game.prototype.start = function () {
             }
         }
 
+
+        if (this.isObserver) {
+            this._camera.followObject(this._enemies[0])
+        } else {
+
+        }
+
+
         for (let i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];
             let b = new Bullet(bullet)
@@ -110,8 +120,6 @@ Game.prototype.start = function () {
             this._explosionPoints.push(model)
         }
 
-
-
         this._fog.setPosition(fog.x, fog.y)
         this._fog.setRadius(fog.r)
     })
@@ -120,6 +128,24 @@ Game.prototype.start = function () {
     this.update()
 }
 
+
+Game.prototype.renderGUI = function (ctx) {
+
+    ctx.font = "bold 25px Arial";
+    ctx.fillStyle = "#00FF00";
+    ctx.textAlign = "left";
+    ctx.fillText('Life :' + Math.ceil(this._hero.getLife()), 10, 30);
+
+
+    if (this._text !== undefined) {
+        ctx.font = "bold 35px Arial";
+        ctx.fillStyle = "#00FF00";
+        ctx.textAlign = "center";
+        ctx.fillText(this._text, 350, 350);
+    }
+}
+
+
 Game.prototype.update = function () {
 
     this._frame.deltaTime = Date.now() - deltaTimeTemp
@@ -127,25 +153,7 @@ Game.prototype.update = function () {
     var ctx = this._ctx
     ctx.clearRect(0, 0, 700, 700)
 
-    let cameraX
-    let cameraY
-    if (this._hero.getX() < 350) {
-        cameraX = 0
-    } else if (this._hero.getX() > 4650) {
-        cameraX = 4650 - 350
-    } else {
-        cameraX = this._hero.getX() - 350
-    }
 
-    if (this._hero.getY() < 350) {
-        cameraY = 0
-    } else if (this._hero.getY() > 4650) {
-        cameraY = 4650 - 350
-    } else {
-        cameraY = this._hero.getY() - 350
-    }
-
-    this._camera.setPosition(cameraX, cameraY)
     this._camera.begin(ctx)
 
     while (this._explosionPoints.length > 0) {
@@ -153,19 +161,8 @@ Game.prototype.update = function () {
         this._camera.shakeByDistance(explotion.x - 350, explotion.y - 350)
     }
 
-
-
-
-
     this._camera.update(this._frame)
     this._map.draw(ctx)
-
-    requestObject.x = this._hero.getMoveX()
-    requestObject.y = this._hero.getMoveY()
-    requestObject.md = this._mouseDown
-    requestObject.mp = this._mousePosition
-
-    socket.emit('USER', requestObject)
 
     for (let i = 0; i < this._drops.length; i++) {
         var drop = this._drops[i];
@@ -189,7 +186,6 @@ Game.prototype.update = function () {
         const explosion = this._explosions[i];
         explosion.update(this._frame)
         explosion.draw(ctx)
-
         if (explosion.isDead()) {
             this._explosions.splice(i, 1)
             i--
@@ -199,17 +195,14 @@ Game.prototype.update = function () {
     this._fog.draw(ctx)
     this._camera.end(ctx)
 
-    ctx.font = "bold 25px Arial";
-    ctx.fillStyle = "#00FF00";
-    ctx.textAlign = "left";
-    ctx.fillText('Life :' + Math.ceil(this._hero.getLife()), 10, 30);
+    this.renderGUI(ctx)
 
-
-    if (this._text !== undefined) {
-        ctx.font = "bold 35px Arial";
-        ctx.fillStyle = "#00FF00";
-        ctx.textAlign = "center";
-        ctx.fillText(this._text, 350, 350);
+    if (this._hero instanceof Hero) {
+        requestObject.x = this._hero.getMoveX()
+        requestObject.y = this._hero.getMoveY()
+        requestObject.md = this._mouseDown
+        requestObject.mp = this._mousePosition
+        socket.emit('USER', requestObject)
     }
 
     deltaTimeTemp = Date.now()

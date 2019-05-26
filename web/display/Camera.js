@@ -13,8 +13,11 @@ Camera.prototype.begin = function (ctx) {
     // ctx.scale(0.2, 0.2)
 }
 
-Camera.prototype.shakeByDistance = function (x, y) {
+Camera.prototype.followObject = function (object2d) {
+    this._followObject = object2d
+}
 
+Camera.prototype.shakeByDistance = function (x, y) {
 
     let dx = this._x - x
     let dy = this._y - y
@@ -29,9 +32,48 @@ Camera.prototype.shakeByDistance = function (x, y) {
 
 }
 
+
+Camera.prototype.checkBorder = function () {
+
+    let cameraX
+    let cameraY
+
+    if (this._followObject) {
+
+        let follow = this._followObject
+
+        if (follow.getX() < 350) {
+            cameraX = 0
+        } else if (follow.getX() > 4650) {
+            cameraX = 4650 - 350
+        } else {
+            cameraX = follow.getX() - 350
+        }
+
+        if (follow.getY() < 350) {
+            cameraY = 0
+        } else if (follow.getY() > 4650) {
+            cameraY = 4650 - 350
+        } else {
+            cameraY = follow.getY() - 350
+        }
+
+        this.setPosition(cameraX, cameraY)
+    } else {
+
+    }
+
+}
+
 Camera.prototype.update = function (frame) {
     this._shakeTime -= frame.deltaTime
     let ctx = frame.context
+
+    // if (this._followObject) {
+    //     this.setPosition(this._followObject.getX(), this._followObject.getY())
+    // }
+
+    this.checkBorder()
 
     if (this._shakeTime > 0) {
         let shakeTime = this._shakeTime / 1000
@@ -42,6 +84,7 @@ Camera.prototype.update = function (frame) {
     } else {
 
     }
+
 
     ctx.translate(-this._x, -this._y)
 }

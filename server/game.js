@@ -5,7 +5,7 @@ const { CENTER } = require('../common/map')
 const { inWalkable } = require('./map-collision')
 
 
-const PLAYER_WAITING_TIME = 1
+const PLAYER_WAITING_TIME = 300
 
 class Bullet {
     constructor(x, y, targetX, targetY) {
@@ -66,6 +66,10 @@ class Game {
 
         this._statusTimer = 0
         this.setStatus(STATUS.WAITING_PLAYERS)
+    }
+
+    isWaitingForPlayer() {
+        return this._gameStatus === STATUS.WAITING_PLAYERS
     }
 
     setStatus(status) {

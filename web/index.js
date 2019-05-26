@@ -27,12 +27,31 @@ AssetsManager.addImage("target", '/images/target.png')
 AssetsManager.addImage("smoke", '/images/smoke.png')
 AssetsManager.addImage("explosion", '/images/explosion.png')
 
+
+let names = ['Adam', 'Martin', 'Irina', 'Selim', 'Saksağan']
 AssetsManager.onReady(function () {
 
-    let userName = 'Adam' + Date.now()
-    socket.emit('ADD_NAME', userName)
-    var game = new Game(gameCanvas, userName)
-    game.init()
-    game.start()
+    // window.prompt("Your nick will be here", "");
 
+    // let userName = 'Adam' + Date.now()
+    let userName = names.shift()
+
+    socket.on('MESSAGE', function (message) {
+
+        let state = message.s
+        var game = new Game(gameCanvas, userName)
+        game.init()
+        if (state === 0) {
+
+            game.isObserver = true
+
+        } else {
+        }
+
+        game.start()
+
+        window.game = game
+
+    })
+    socket.emit('ADD_NAME', userName)
 })
