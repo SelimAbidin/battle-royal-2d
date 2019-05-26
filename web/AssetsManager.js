@@ -8,7 +8,7 @@ function AssetsManager() {
 
 function onload() {
     var hasNonFinished = false
-    for (const key in assets) {
+    for (var key in assets) {
         var asset = assets[key]
         if (!asset.ready) {
             hasNonFinished = true
