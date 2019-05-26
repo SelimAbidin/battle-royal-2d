@@ -7,9 +7,9 @@ function AssetsManager() {
 }
 
 function onload() {
-    let hasNonFinished = false
+    var hasNonFinished = false
     for (const key in assets) {
-        let asset = assets[key]
+        var asset = assets[key]
         if (!asset.ready) {
             hasNonFinished = true
             break
@@ -17,7 +17,7 @@ function onload() {
     }
 
     if (!hasNonFinished) {
-        for (let i = 0; i < _callbacks.length; i++) {
+        for (var i = 0; i < _callbacks.length; i++) {
             _callbacks[i]()
         }
         _callbacks.length = 0
@@ -31,7 +31,7 @@ AssetsManager.addImage = function (key, assetPath) {
         ready: false
     }
     image.onload = function (event) {
-        let image = event.currentTarget
+        var image = event.currentTarget
         asset.width = image.width
         asset.height = image.height
         asset.ready = true

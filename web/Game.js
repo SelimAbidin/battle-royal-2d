@@ -70,7 +70,7 @@ Game.prototype.onMouseUp = function () {
     this._hero.releaseAmmo()
 }
 
-let deltaTimeTemp
+var deltaTimeTemp
 Game.prototype.start = function () {
 
     socket.on('UPDATE', (data) => {
@@ -111,19 +111,19 @@ Game.prototype.start = function () {
         }
 
 
-        for (let i = 0; i < bullets.length; i++) {
+        for (var i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];
-            let b = new Bullet(bullet)
-            let drop = new DropArea()
+            var b = new Bullet(bullet)
+            var drop = new DropArea()
             drop.setPosition(bullet.tx, bullet.ty)
             this._bullets.push(b)
             this._drops.push(drop)
         }
 
 
-        for (let index = 0; index < explosions.length; index++) {
+        for (var index = 0; index < explosions.length; index++) {
             const model = explosions[index];
-            let explosion = new Explosion()
+            var explosion = new Explosion()
             explosion.setPosition(model.x, model.y)
             this._explosions.push(explosion)
             this._explosionPoints.push(model)
@@ -166,32 +166,32 @@ Game.prototype.update = function () {
     this._camera.begin(ctx)
 
     while (this._explosionPoints.length > 0) {
-        let explotion = this._explosionPoints.shift()
+        var explotion = this._explosionPoints.shift()
         this._camera.shakeByDistance(explotion.x - 350, explotion.y - 350)
     }
 
     this._camera.update(this._frame)
     this._map.draw(ctx)
 
-    for (let i = 0; i < this._drops.length; i++) {
+    for (var i = 0; i < this._drops.length; i++) {
         var drop = this._drops[i];
         drop.draw(ctx)
     }
 
-    for (let i = 0; i < this._enemies.length; i++) {
+    for (var i = 0; i < this._enemies.length; i++) {
         var enemy = this._enemies[i];
         enemy.draw(ctx)
     }
 
     this._hero.draw(ctx)
 
-    for (let i = 0; i < this._bullets.length; i++) {
+    for (var i = 0; i < this._bullets.length; i++) {
         var bullet = this._bullets[i];
         bullet.draw(ctx)
     }
 
 
-    for (let i = 0; i < this._explosions.length; i++) {
+    for (var i = 0; i < this._explosions.length; i++) {
         const explosion = this._explosions[i];
         explosion.update(this._frame)
         explosion.draw(ctx)

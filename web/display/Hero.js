@@ -73,8 +73,8 @@ Hero.prototype.draw = function (context) {
 
     // if (this._loadingAmmo) {
     //     this._ammoPower = Math.min(this._ammoPower + 16, 1000)
-    //     let x = this._x - (this._width / 2)
-    //     let y = this._y + (this._height / 2)
+    //     var x = this._x - (this._width / 2)
+    //     var y = this._y + (this._height / 2)
     //     context.beginPath()
     //     context.fillStyle = "white";
     //     context.rect(x, y + 1, this._width, 10)

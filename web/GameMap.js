@@ -10,8 +10,8 @@ function GameMap() {
 
 GameMap.prototype.init = function () {
 
-    let tileSize = TILE_SIZE
-    let half = tileSize * 0.5
+    var tileSize = TILE_SIZE
+    var half = tileSize * 0.5
     for (var i = 0; i < _map.length; i++) {
         var row = _map[i]
         for (var j = 0; j < row.length; j++) {

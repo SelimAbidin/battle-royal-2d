@@ -64,9 +64,6 @@ class Game {
         this._clearArea = new ClearArea(5000)
         this._isOver = false
         this._statusTimer = 0
-
-        console.log("new game");
-
         this.setStatus(STATUS.WAITING_PLAYERS)
     }
 
