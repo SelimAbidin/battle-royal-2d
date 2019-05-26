@@ -27,7 +27,7 @@ GameMap.prototype.init = function () {
 
 GameMap.prototype.draw = function (camera, context) {
     for (var i = 0; i < this._sprites.length; i++) {
-        const sprite = this._sprites[i];
+        var sprite = this._sprites[i];
         sprite.draw(camera, context)
     }
 }

@@ -122,7 +122,7 @@ Game.prototype.start = function () {
 
 
         for (var index = 0; index < explosions.length; index++) {
-            const model = explosions[index];
+            var model = explosions[index];
             var explosion = new Explosion()
             explosion.setPosition(model.x, model.y)
             this._explosions.push(explosion)
@@ -192,7 +192,7 @@ Game.prototype.update = function () {
 
 
     for (var i = 0; i < this._explosions.length; i++) {
-        const explosion = this._explosions[i];
+        var explosion = this._explosions[i];
         explosion.update(this._frame)
         explosion.draw(ctx)
         if (explosion.isDead()) {
