@@ -36,7 +36,7 @@ AssetsManager.onReady(function () {
     let userName = 'Adam' + Date.now()
     // let userName = names.pop()
 
-    socket.on('MESSAGE', function (message) {
+    socket.once('START_MESSAGE', function (message) {
 
         let state = message.s
         var game = new Game(gameCanvas, userName)

@@ -30,6 +30,13 @@ function Game(gameCanvas, userName) {
     this._camera = new Camera()
     this._mouseDown = false
 
+    socket.on('MESSAGE', (e) => {
+
+        if (e.s === 3) {
+            this._text = e.t
+        }
+
+    })
 }
 
 Game.prototype.init = function () {

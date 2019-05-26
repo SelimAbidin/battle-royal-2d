@@ -63,8 +63,10 @@ class Game {
         this._explotions = []
         this._clearArea = new ClearArea(5000)
         this._isOver = false
-
         this._statusTimer = 0
+
+        console.log("new game");
+
         this.setStatus(STATUS.WAITING_PLAYERS)
     }
 
@@ -123,7 +125,12 @@ class Game {
     }
 
     isOver() {
-        return this._isOver
+        let status = this._gameStatus
+        return this._users.length < 2 && status === STATUS.PLAYING
+    }
+
+    getWinner() {
+        return this._winner
     }
 
     updateBullets(deltaTme) {
@@ -203,12 +210,11 @@ class Game {
 
         if (this.getStatus() === STATUS.PLAYING) {
             if (this._users.length === 1) {
-                // console.log('Winner', this._users[0].name);
+                this._winner = this._users[0].name
             } else {
 
             }
         }
-
     }
 
     serialize() {

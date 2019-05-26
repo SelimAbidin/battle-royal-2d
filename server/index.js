@@ -54,12 +54,12 @@ io.on('connection', function (socket) {
 
         if (game.isWaitingForPlayer()) {
             game.addUser(player)
-            socket.emit('MESSAGE', {
+            socket.emit('START_MESSAGE', {
                 s: 1,
                 message: "Game already started"
             })
         } else {
-            socket.emit('MESSAGE', {
+            socket.emit('START_MESSAGE', {
                 s: 0,
                 message: "Game already started"
             })
@@ -85,15 +85,20 @@ setInterval(() => {
     if (game) {
 
         game.update((Date.now() - deltaTime) / 1000)
-        // if (game.isOver()) {
-        //     let gameEndData = game.serialize()
-        //     gameEndData.state = 'GAME_OVER'
-        //     io.emit('UPDATE', gameEndData)
-        //     return
-        // }
+
+        if (!game.isOver()) {
+            io.emit('UPDATE', game.serialize())
+        } else {
+
+            io.emit('MESSAGE', {
+                s: 3,
+                t: 'Champion is ' + game.getWinner()
+            })
+
+            game = null
+        }
 
         deltaTime = Date.now()
-        io.emit('UPDATE', game.serialize())
     }
 
 
