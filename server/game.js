@@ -62,7 +62,7 @@ class Game {
         this._users = []
         this._bullets = []
         this._explotions = []
-        this._clearArea = new ClearArea(2000)
+        this._clearArea = new ClearArea(10000)
         this._isOver = false
 
         this._statusTimer = 0

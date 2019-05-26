@@ -1,19 +1,24 @@
 
-const { SIZE } = require('../common/map')
+const { SIZE, CENTER } = require('../common/map')
 
 class ClearArea {
 
     constructor(radius) {
         this._radius = radius
         this._nextArea = radius
-        this.x = parseInt(Math.random() * SIZE.x, 10)
-        this.y = parseInt(Math.random() * SIZE.y, 10)
+
+        let x = CENTER.x + ((Math.random() * SIZE.x) - (SIZE.x / 2))
+        let y = CENTER.y + ((Math.random() * SIZE.y) - (SIZE.y / 2))
+
+        this.x = parseInt(x, 10)
+        this.y = parseInt(y, 10)
+
         this._onTimerToShirink = this._onTimerToShirink.bind(this)
         this._interval = setInterval(this._onTimerToShirink, 25000)
     }
 
     _onTimerToShirink() {
-        // this._nextArea -= 1000
+        this._nextArea -= 1000
     }
 
     getRadius() {
