@@ -28,8 +28,12 @@ class Fog extends Object2D {
         if (this._radius === null) return
 
         ctx.beginPath();
-        let pattern = this.getPattern(ctx)
-        ctx.fillStyle = pattern
+
+        if (!this._pattern) {
+            this._pattern = this.getPattern(ctx)
+        }
+
+        ctx.fillStyle = this._pattern
         let x = this._x
         let y = this._y
         ctx.arc(x, y, this._maxRadius, 0, Math.PI * 2)

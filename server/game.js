@@ -2,6 +2,7 @@ const { BULLET } = require('../types')
 const { Player } = require('./player')
 const { ClearArea } = require('./clearArea')
 const { CENTER } = require('../common/map')
+const { inWalkable } = require('./map-collision')
 
 
 const PLAYER_WAITING_TIME = 1
@@ -21,12 +22,10 @@ class Bullet {
     }
 
     update(deltaTime) {
-
         this._time += deltaTime
         if (this._time > 1.0) {
             this._isDead = true
         }
-
     }
 
     getTargetX() {
@@ -62,7 +61,7 @@ class Game {
         this._users = []
         this._bullets = []
         this._explotions = []
-        this._clearArea = new ClearArea(10000)
+        this._clearArea = new ClearArea(5000)
         this._isOver = false
 
         this._statusTimer = 0
@@ -79,9 +78,24 @@ class Game {
                 setTimeout(e => this.setStatus(STATUS.PLAYING), PLAYER_WAITING_TIME * 1000)
             } else if (status === STATUS.PLAYING) {
                 this._users.forEach(user => {
-                    let x = (Math.random() * 500) + 500
-                    let y = Math.random() * 500 + 500
-                    user.setPosition(x, y)
+
+                    let placed = false
+                    let safe = 0
+                    while (!placed) {
+                        let cx = this._clearArea.x
+                        let cy = this._clearArea.y
+                        let radius = this._clearArea.getRadius() / 2
+                        let x = cx + Math.random() * radius
+                        let y = cy + Math.random() * radius
+                        user.setPosition(x, y)
+                        placed = inWalkable(x, y)
+                        if (++safe > 100) {
+                            break
+                        }
+                    }
+
+
+
                 })
                 this._allowCollision = true
             }

@@ -37,7 +37,7 @@ function Game(gameCanvas, userName) {
 Game.prototype.init = function () {
     this._hero = new Hero(this._name)
     this._map = new GameMap()
-    this._fog = new Fog(CENTER, Math.max(SIZE.x, SIZE.y))
+    this._fog = new Fog(CENTER, Math.max(SIZE.x, SIZE.y) * 2)
 }
 
 Game.prototype.onMouseMove = function (e) {

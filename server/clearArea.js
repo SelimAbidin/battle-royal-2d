@@ -1,24 +1,31 @@
 
 const { SIZE, CENTER } = require('../common/map')
 
+const SHIRINK_TIME = 15 * 1000
 class ClearArea {
 
     constructor(radius) {
         this._radius = radius
         this._nextArea = radius
 
-        let x = CENTER.x + ((Math.random() * SIZE.x) - (SIZE.x / 2))
-        let y = CENTER.y + ((Math.random() * SIZE.y) - (SIZE.y / 2))
+        let width = SIZE.x * 0.6
+        let height = SIZE.y * 0.6
+        let x = CENTER.x + ((Math.random() * width) - (width / 2))
+        let y = CENTER.y + ((Math.random() * height) - (height / 2))
+
+        // console.log(x, y);
 
         this.x = parseInt(x, 10)
         this.y = parseInt(y, 10)
 
         this._onTimerToShirink = this._onTimerToShirink.bind(this)
-        this._interval = setInterval(this._onTimerToShirink, 25000)
+        this._interval = setTimeout(this._onTimerToShirink, SHIRINK_TIME)
     }
 
     _onTimerToShirink() {
         this._nextArea -= 1000
+        this._interval = null
+        console.log('Shirink', this._nextArea);
     }
 
     getRadius() {
@@ -34,13 +41,17 @@ class ClearArea {
     update(deltaTme) {
 
         if (this._radius > this._nextArea) {
-            this._radius -= deltaTme * 120
+            this._radius -= deltaTme * 150
         } else {
+
+            if (this._interval === null) {
+                this._interval = setTimeout(this._onTimerToShirink, SHIRINK_TIME)
+            }
+
             this._radius = this._nextArea
         }
 
         if (this._radius <= 0) {
-            // this._isOver = true
             this._radius = 0
             return
         }
