@@ -6,6 +6,7 @@ const io = require('socket.io')(http)
 const { join } = require('path')
 const { Game } = require('./game')
 const { Player } = require('./player')
+const { MESSAGE_STATES, START_MESSAGE } = require('../common/variables')
 
 
 // let game = new Game()
@@ -55,12 +56,12 @@ io.on('connection', function (socket) {
         if (game.isWaitingForPlayer()) {
             game.addUser(player)
             socket.emit('START_MESSAGE', {
-                s: 1,
+                s: START_MESSAGE.PLAYER,
                 message: "Game already started"
             })
         } else {
             socket.emit('START_MESSAGE', {
-                s: 0,
+                s: START_MESSAGE.OBSERVER,
                 message: "Game already started"
             })
         }
@@ -91,7 +92,7 @@ setInterval(() => {
         } else {
 
             io.emit('MESSAGE', {
-                s: 3,
+                s: MESSAGE_STATES.ONLY_TEXT,
                 t: 'Champion is ' + game.getWinner()
             })
 

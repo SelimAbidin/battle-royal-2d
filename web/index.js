@@ -1,6 +1,7 @@
 import { Game } from './Game'
 import { AssetsManager } from './AssetsManager'
 import { socket } from './socket'
+import { START_MESSAGE } from '../common/variables'
 
 
 function createCanvas(width, height) {
@@ -41,13 +42,9 @@ AssetsManager.onReady(function () {
         var state = message.s
         var game = new Game(gameCanvas, userName)
         game.init()
-        if (state === 0) {
-
+        if (state === START_MESSAGE.OBSERVER) {
             game.isObserver = true
-
-        } else {
         }
-
         game.start()
 
         window.game = game

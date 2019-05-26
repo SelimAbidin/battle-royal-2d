@@ -6,6 +6,7 @@ import { socket } from './socket'
 import { Camera } from './display/Camera';
 import { Fog } from './display/Fog';
 import { SIZE, CENTER } from '../common/map';
+import { PLAYER_WAITING_TIME, MESSAGE_STATES } from '../common/variables';
 import { DropArea } from './display/DropArea';
 import { Explosion } from './display/Explosion';
 
@@ -32,7 +33,7 @@ function Game(gameCanvas, userName) {
 
     socket.on('MESSAGE', (e) => {
 
-        if (e.s === 3) {
+        if (e.s === MESSAGE_STATES.ONLY_TEXT) {
             this._text = e.t
         }
 
@@ -76,7 +77,7 @@ Game.prototype.start = function () {
     socket.on('UPDATE', (data) => {
 
         if (data.s === 0) {
-            this._text = "WAITING FOR PLAYERS (" + (30 - Math.round(data.t / 1000)) + ")"
+            this._text = "WAITING FOR PLAYERS (" + (PLAYER_WAITING_TIME - Math.round(data.t / 1000)) + ")"
         } else {
             this._text = undefined
         }

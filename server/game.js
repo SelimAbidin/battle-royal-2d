@@ -1,11 +1,9 @@
 const { BULLET } = require('../types')
 const { Player } = require('./player')
 const { ClearArea } = require('./clearArea')
-const { CENTER } = require('../common/map')
 const { inWalkable } = require('./map-collision')
+const { PLAYER_WAITING_TIME } = require('../common/variables')
 
-
-const PLAYER_WAITING_TIME = 5
 
 class Bullet {
     constructor(x, y, targetX, targetY) {
