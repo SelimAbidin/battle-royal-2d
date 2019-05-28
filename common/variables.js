@@ -1,0 +1,18 @@
+const PLAYER_WAITING_TIME = 10
+
+
+
+const MESSAGE_STATES = {
+    ONLY_TEXT: 3
+}
+
+const START_MESSAGE = {
+    PLAYER: 1,
+    OBSERVER: 0
+}
+
+module.exports = {
+    PLAYER_WAITING_TIME,
+    MESSAGE_STATES,
+    START_MESSAGE
+}
